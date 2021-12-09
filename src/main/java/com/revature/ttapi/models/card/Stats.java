@@ -6,6 +6,16 @@ public class Stats {
     private int bottom;
     private int left;
 
+    public Stats(){
+    }
+
+    public Stats(int top, int right, int bottom, int left) {
+        this.top = top;
+        this.right = right;
+        this.bottom = bottom;
+        this.left = left;
+    }
+
     public int getTop() {
         return top;
     }

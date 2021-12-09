@@ -86,4 +86,75 @@ Using numeric version of stats
     private Stats stats;
     private Type type;
 
+    public Card(){
+    }
+
+    public Card(int id, String name, String description, int stars, Stats stats, Type type) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.stars = stars;
+        this.stats = stats;
+        this.type = type;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getStars() {
+        return stars;
+    }
+
+    public void setStars(int stars) {
+        this.stars = stars;
+    }
+
+    public Stats getStats() {
+        return stats;
+    }
+
+    public void setStats(Stats stats) {
+        this.stats = stats;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return "Card{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", stars=" + stars +
+                ", stats=" + stats +
+                ", type=" + type +
+                '}';
+    }
 }
