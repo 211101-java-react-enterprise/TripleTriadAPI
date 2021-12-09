@@ -1,6 +1,9 @@
 package com.revature.ttapi.models.card;
 
-public class Card {
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class Card{
     /*
     Reference card data:
     {
@@ -75,7 +78,7 @@ public class Card {
   }
 }
 
-Keeping: ID, Name, Desc, Stars, Stats, Type
+Keeping: ID, Name, Desc, Stars, Stats
 Using numeric version of stats
      */
 
@@ -84,18 +87,22 @@ Using numeric version of stats
     private String description;
     private int stars;
     private Stats stats;
-    private Type type;
 
     public Card(){
     }
 
-    public Card(int id, String name, String description, int stars, Stats stats, Type type) {
+    @JsonCreator
+    public Card(@JsonProperty("id")int id,
+                @JsonProperty("name")String name,
+                @JsonProperty("description")String description,
+                @JsonProperty("stars")int stars,
+                @JsonProperty("stats")Stats stats,
+                @JsonProperty("type")Type type) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.stars = stars;
         this.stats = stats;
-        this.type = type;
     }
 
     public int getId() {
@@ -138,14 +145,6 @@ Using numeric version of stats
         this.stats = stats;
     }
 
-    public Type getType() {
-        return type;
-    }
-
-    public void setType(Type type) {
-        this.type = type;
-    }
-
     @Override
     public String toString() {
         return "Card{" +
@@ -154,7 +153,6 @@ Using numeric version of stats
                 ", description='" + description + '\'' +
                 ", stars=" + stars +
                 ", stats=" + stats +
-                ", type=" + type +
                 '}';
     }
 }

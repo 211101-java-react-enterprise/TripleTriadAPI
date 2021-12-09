@@ -1,5 +1,8 @@
 package com.revature.ttapi.models.card;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Type {
     private int id;
     private String name;
@@ -7,7 +10,9 @@ public class Type {
     public Type(){
     }
 
-    public Type(int id, String name) {
+    @JsonCreator
+    public Type(@JsonProperty("id")int id,
+                @JsonProperty("name")String name) {
         this.id = id;
         this.name = name;
     }

@@ -1,5 +1,8 @@
 package com.revature.ttapi.models.card;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Stats {
     private int top;
     private int right;
@@ -9,7 +12,11 @@ public class Stats {
     public Stats(){
     }
 
-    public Stats(int top, int right, int bottom, int left) {
+    @JsonCreator
+    public Stats(@JsonProperty("top")int top,
+                 @JsonProperty("right")int right,
+                 @JsonProperty("bottom")int bottom,
+                 @JsonProperty("left")int left) {
         this.top = top;
         this.right = right;
         this.bottom = bottom;
