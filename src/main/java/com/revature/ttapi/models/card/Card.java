@@ -76,6 +76,7 @@ public class Card {
 }
 
 Keeping: ID, Name, Desc, Stars, Stats, Type
+Using numeric version of stats
      */
 
     private int id;
