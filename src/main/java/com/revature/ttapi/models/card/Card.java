@@ -2,7 +2,13 @@ package com.revature.ttapi.models.card;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.revature.ttapi.user.AppUser;
 
+import javax.persistence.*;
+
+
+@Entity
+@Table(name = "cards")
 public class Card{
     /*
     Reference card data:
@@ -82,11 +88,23 @@ Keeping: ID, Name, Desc, Stars, Stats
 Using numeric version of stats
      */
 
+    @Id
+    @Column(name = "card_id", columnDefinition = "serial")
     private int id;
+    @Column(name = "name", columnDefinition = "varchar(255)")
     private String name;
+    @Column(name = "description", columnDefinition = "varchar(255)")
     private String description;
+    @Column(name = "stars", columnDefinition = "int")
     private int stars;
+
+    //TODO: Map this relationship within the databse
+    @Transient
     private Stats stats;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private AppUser appUser;
 
     public Card(){
     }
@@ -97,7 +115,7 @@ Using numeric version of stats
                 @JsonProperty("description")String description,
                 @JsonProperty("stars")int stars,
                 @JsonProperty("stats")Stats stats,
-                @JsonProperty("type")Type type) {
+                @JsonProperty("type")Type type){
         this.id = id;
         this.name = name;
         this.description = description;
@@ -143,6 +161,14 @@ Using numeric version of stats
 
     public void setStats(Stats stats) {
         this.stats = stats;
+    }
+
+    public AppUser getAppUser() {
+        return appUser;
+    }
+
+    public void setAppUser(AppUser appUser) {
+        this.appUser = appUser;
     }
 
     @Override
