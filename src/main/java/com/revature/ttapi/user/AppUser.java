@@ -2,7 +2,7 @@ package com.revature.ttapi.user;
 
 import org.hibernate.validator.constraints.Range;
 
-import com.revature.ttapi.models.Card;
+import com.revature.ttapi.models.card.Card;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -33,11 +33,7 @@ public class AppUser {
     @Column(nullable = false, columnDefinition = "INT DEFAULT 0")
     private int mgp;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-        name = "app_users_cards",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "card_id"))
+    @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Card> cards = new HashSet<>();
 
     public String getId() {
