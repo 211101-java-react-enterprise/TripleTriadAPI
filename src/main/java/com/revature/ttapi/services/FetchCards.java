@@ -1,6 +1,8 @@
 package com.revature.ttapi.services;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.revature.ttapi.models.card.Card;
@@ -10,6 +12,7 @@ import java.io.*;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 public class FetchCards {
 
@@ -35,7 +38,6 @@ public class FetchCards {
     }
 
     public Card parse(String json) throws JsonProcessingException {
-        //String json = fetch();
         ObjectMapper om = new ObjectMapper();
         SimpleModule module = new SimpleModule();
         module.addDeserializer(Card.class, new CardDeserializer(Card.class));
@@ -45,4 +47,20 @@ public class FetchCards {
                 .readValue(json);
     }
 
+
+    public Card[] generateArray() throws JsonProcessingException {
+        String json = fetch();
+        //create a JsonNode which is a Key, value searchable set
+        ObjectMapper om = new ObjectMapper();
+        JsonNode top = om.readTree(json);
+        //Register my deserializer for the card
+        SimpleModule module = new SimpleModule();
+        module.addDeserializer(Card.class, new CardDeserializer(Card.class));
+        om.registerModule(module);
+        //it's apparently just this easy
+        System.out.println(top.get("results"));
+        Card[] a = om.readValue(top.get("results").toString(), Card[].class);
+        Card.setCount(top.get("count").asInt());
+        return a;
+    }
 }

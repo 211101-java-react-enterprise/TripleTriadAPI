@@ -88,6 +88,8 @@ Using numeric version of stats
     private int stars;
     private Stats stats;
 
+    private static int count = 0;
+
     public Card(){
     }
 
@@ -96,8 +98,7 @@ Using numeric version of stats
                 @JsonProperty("name")String name,
                 @JsonProperty("description")String description,
                 @JsonProperty("stars")int stars,
-                @JsonProperty("stats")Stats stats,
-                @JsonProperty("type")Type type) {
+                @JsonProperty("stats")Stats stats) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -143,6 +144,19 @@ Using numeric version of stats
 
     public void setStats(Stats stats) {
         this.stats = stats;
+    }
+
+    public static int getCount() {
+        return count;
+    }
+
+    public static void setCount(int count) {
+        Card.count = count;
+    }
+
+    //for adding or removing some number to/from the count
+    public static void addCount(int count) {
+        Card.count += count;
     }
 
     @Override
