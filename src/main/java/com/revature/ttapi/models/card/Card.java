@@ -102,6 +102,8 @@ Using numeric version of stats
     @Transient
     private Stats stats;
 
+    private static int count = 0;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private AppUser appUser;
@@ -114,8 +116,7 @@ Using numeric version of stats
                 @JsonProperty("name")String name,
                 @JsonProperty("description")String description,
                 @JsonProperty("stars")int stars,
-                @JsonProperty("stats")Stats stats,
-                @JsonProperty("type")Type type){
+                @JsonProperty("stats")Stats stats) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -169,6 +170,19 @@ Using numeric version of stats
 
     public void setAppUser(AppUser appUser) {
         this.appUser = appUser;
+    }
+
+    public static int getCount() {
+        return count;
+    }
+
+    public static void setCount(int count) {
+        Card.count = count;
+    }
+
+    //for adding or removing some number to/from the count
+    public static void addCount(int count) {
+        Card.count += count;
     }
 
     @Override
