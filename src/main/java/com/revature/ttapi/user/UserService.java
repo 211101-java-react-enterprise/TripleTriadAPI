@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -42,26 +42,27 @@ public class UserService {
 
     @Transactional
     public RegistrationSuccessResponse registerNewUser(NewRegistrationRequest newRegistration) {
-
+        if (!isUsernameAvailable(newRegistration.getUsername())) {
+            String msg = "Sorry, that username has already been taken!";
+            throw new ResourcePersistenceException(msg);
+        }
+        if (!isEmailAvailable(newRegistration.getEmail())) {
+            String msg = "That email is already registered to another account, did you forget your password?!";
+            throw new ResourcePersistenceException(msg);
+        }
         AppUser newUser = new AppUser(); // entity state: transient (not associated with an active session)
         newUser.setEmail(newRegistration.getEmail());
         newUser.setUsername(newRegistration.getUsername());
         newUser.setPassword(newRegistration.getPassword());
-
-        boolean usernameAvailable = !userRepo.findAppUserByUsername(newUser.getUsername()).isPresent();
-        boolean emailAvailable = !userRepo.findAppUserByEmail(newUser.getEmail()).isPresent();
-
-        if (!usernameAvailable || !emailAvailable) {
-            String msg = "The values provided for the following fields are already taken by other users:";
-            if (!usernameAvailable) msg = msg + "\n\t- username";
-            if (!emailAvailable) msg = msg + "\n\t- email";
-            throw new ResourcePersistenceException(msg);
-        }
-
-        newUser.setId(UUID.randomUUID().toString());
+        newUser.setMgp(500);
         newUser.setAccountType(AppUser.AccountType.BASIC);
         userRepo.save(newUser); // entity state: persistent (associated with an active session)
-        return new RegistrationSuccessResponse(newUser.getId());
+        Optional<AppUser> registeredUser = userRepo.findUserByUsernameAndPassword(newUser.getUsername(), newUser.getPassword());
+        if (registeredUser.isEmpty()) {
+            String msg = "Something has gone wrong! Pleases try again later.";
+            throw new ResourcePersistenceException(msg);
+        }
+        return new RegistrationSuccessResponse(registeredUser.get().getId().toString());
 
     }
 
@@ -74,7 +75,6 @@ public class UserService {
 
         return userRepo.findUserByUsernameAndPassword(username, password)
                        .orElseThrow(AuthenticationException::new);
-
     }
 
     @Transactional
@@ -82,10 +82,8 @@ public class UserService {
 
         try {
             AppUser original = userRepo.findById(editRequest.getId())
-                                       .orElseThrow(ResourceNotFoundException::new);
-
+                    .orElseThrow(ResourceNotFoundException::new);
             Predicate<String> notNullOrEmpty = str -> str != null && !str.equals("");
-
             if (notNullOrEmpty.test(editRequest.getEmail())) {
                 if (userRepo.findAppUserByEmail(editRequest.getEmail()).isPresent()) {
                     throw new ResourcePersistenceException("The provided email is already by another user.");
@@ -94,29 +92,27 @@ public class UserService {
             } else if (notNullOrEmpty.test(editRequest.getPassword())) {
                 original.setPassword(editRequest.getPassword());
             }
-
         } catch (ResourcePersistenceException e) {
             throw e;
         } catch (Exception e) {
             throw new ResourcePersistenceException("Could not update user due to nested exception", e);
         }
-
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public boolean isUsernameAvailable(String username) {
         try {
-            return !userRepo.findAppUserByUsername(username).isPresent();
+            return userRepo.findAppUserByUsername(username).isEmpty();
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
         }
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public boolean isEmailAvailable(String email) {
         try {
-            return !userRepo.findAppUserByEmail(email).isPresent();
+            return userRepo.findAppUserByEmail(email).isEmpty();
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
