@@ -1,9 +1,12 @@
 package com.revature.ttapi;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.revature.ttapi.common.exceptions.AuthenticationException;
+import com.revature.ttapi.common.exceptions.InvalidRequestException;
 import com.revature.ttapi.models.card.Card;
 import com.revature.ttapi.models.card.Stats;
 import com.revature.ttapi.services.FetchCards;
+import com.revature.ttapi.user.AppUser;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
