@@ -31,7 +31,6 @@ public class EditUserRequest extends EditResourceRequest {
 
     public AppUser extractUser() {
         AppUser user = new AppUser();
-        user.setId(id);
         user.setEmail(email);
         user.setPassword(password);
         user.setMgp(mgp);
