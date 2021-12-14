@@ -1,9 +1,8 @@
 package com.revature.ttapi.user;
 
+import com.revature.ttapi.models.card.Card;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Range;
-
-import com.revature.ttapi.models.card.Card;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -16,17 +15,8 @@ public class AppUser {
 
     @Id
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator",
-            parameters = {
-                    @org.hibernate.annotations.Parameter(
-                            name = "uuid_gen_strategy_class",
-                            value = "org.hibernate.id.uuid.CustomVersionOneStrategy"
-                    )
-            }
-    )
-    @Column(name = "id", updatable = false, unique = true, nullable = false)
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "user_id", columnDefinition = "uuid", updatable = false, unique = true, nullable = false)
     private UUID id;
 
     @Column(nullable = false, unique = true, columnDefinition = "VARCHAR CHECK (LENGTH(email) > 0)")
@@ -46,7 +36,8 @@ public class AppUser {
     @Column(nullable = false, columnDefinition = "INT DEFAULT 0")
     private int mgp;
 
-    @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "user_cards", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "card_id"))
     private Set<Card> cards = new HashSet<>();
 
     public UUID getId() {
@@ -108,7 +99,12 @@ public class AppUser {
     }
 
     public enum AccountType {
-        ADMIN, DEV, BASIC, PREMIUM, LOCKED, BANNED
+        ADMIN,
+        DEV,
+        BASIC,
+        PREMIUM,
+        LOCKED,
+        BANNED
     }
 
 }
