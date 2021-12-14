@@ -1,12 +1,10 @@
 package com.revature.ttapi.user;
 
-import com.revature.ttapi.models.card.Card;
+import com.revature.ttapi.collection.CardCollection;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -16,7 +14,7 @@ public class AppUser {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(name = "user_id", columnDefinition = "uuid", updatable = false, unique = true, nullable = false)
+    @Column(name = "user_id", columnDefinition = "uuid", nullable = false)
     private UUID id;
 
     @Column(nullable = false, unique = true, columnDefinition = "VARCHAR CHECK (LENGTH(email) > 0)")
@@ -25,7 +23,7 @@ public class AppUser {
     @Column(nullable = false, updatable = false, unique = true, columnDefinition = "VARCHAR(24) CHECK (LENGTH(username) >= 4)")
     private String username;
 
-    @Column(nullable = false, columnDefinition = "VARCHAR(255) CHECK (LENGTH(password) >= 4)")
+    @Column(nullable = false, columnDefinition = "VARCHAR(255) CHECK (LENGTH(password) >= 6)")
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -36,9 +34,9 @@ public class AppUser {
     @Column(nullable = false, columnDefinition = "INT DEFAULT 0")
     private int mgp;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "user_cards", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "card_id"))
-    private Set<Card> cards = new HashSet<>();
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @PrimaryKeyJoinColumn
+    private CardCollection cardCollection;
 
     public UUID getId() {
         return id;
@@ -90,12 +88,12 @@ public class AppUser {
         this.mgp = mgp;
     }
 
-    public Set<Card> getCards() {
-        return cards;
+    public CardCollection getCardCollection() {
+        return cardCollection;
     }
 
-    public void setCards(Set<Card> cards) {
-        this.cards = cards;
+    public void setCardCollection(CardCollection cardCollection) {
+        this.cardCollection = cardCollection;
     }
 
     public enum AccountType {
@@ -106,5 +104,4 @@ public class AppUser {
         LOCKED,
         BANNED
     }
-
 }
