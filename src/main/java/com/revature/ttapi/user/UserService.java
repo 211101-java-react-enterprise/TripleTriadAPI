@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -28,10 +27,9 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public List<UserResponse> getAllUsers() {
-        List<UserResponse> users = ((Collection<AppUser>) userRepo.findAll())
-            .stream()
-            .map(UserResponse::new)
-            .collect(Collectors.toList());
+        List<UserResponse> users = ((Collection<AppUser>) userRepo.findAll()).stream()
+                                                                             .map(UserResponse::new)
+                                                                             .collect(Collectors.toList());
 
         if (users.isEmpty()) {
             throw new ResourceNotFoundException();
@@ -56,20 +54,17 @@ public class UserService {
         newUser.setPassword(newRegistration.getPassword());
         newUser.setMgp(500);
         newUser.setAccountType(AppUser.AccountType.BASIC);
-        userRepo.save(newUser); // entity state: persistent (associated with an active session)
-        Optional<AppUser> registeredUser = userRepo.findUserByUsernameAndPassword(newUser.getUsername(), newUser.getPassword());
-        if (registeredUser.isEmpty()) {
-            String msg = "Something has gone wrong! Pleases try again later.";
-            throw new ResourcePersistenceException(msg);
-        }
-        return new RegistrationSuccessResponse(registeredUser.get().getId().toString());
-
+        AppUser registeredUser = userRepo.save(newUser); // entity state: persistent (associated with an active session)
+        return new RegistrationSuccessResponse(registeredUser.getId()
+                                                             .toString());
     }
 
     @Transactional(readOnly = true)
     public AppUser authenticateUser(String username, String password) {
 
-        if (username == null || username.trim().equals("") || password == null || password.trim().equals("")) {
+        if (username == null || username.trim()
+                                        .equals("") || password == null || password.trim()
+                                                                                   .equals("")) {
             throw new InvalidRequestException("Invalid credential values provided!");
         }
 
@@ -82,10 +77,11 @@ public class UserService {
 
         try {
             AppUser original = userRepo.findById(editRequest.getId())
-                    .orElseThrow(ResourceNotFoundException::new);
+                                       .orElseThrow(ResourceNotFoundException::new);
             Predicate<String> notNullOrEmpty = str -> str != null && !str.equals("");
             if (notNullOrEmpty.test(editRequest.getEmail())) {
-                if (userRepo.findAppUserByEmail(editRequest.getEmail()).isPresent()) {
+                if (userRepo.findAppUserByEmail(editRequest.getEmail())
+                            .isPresent()) {
                     throw new ResourcePersistenceException("The provided email is already by another user.");
                 }
                 original.setEmail(editRequest.getEmail());
@@ -99,20 +95,22 @@ public class UserService {
         }
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public boolean isUsernameAvailable(String username) {
         try {
-            return userRepo.findAppUserByUsername(username).isEmpty();
+            return !userRepo.findAppUserByUsername(username)
+                            .isPresent();
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
         }
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public boolean isEmailAvailable(String email) {
         try {
-            return userRepo.findAppUserByEmail(email).isEmpty();
+            return !userRepo.findAppUserByEmail(email)
+                            .isPresent();
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
