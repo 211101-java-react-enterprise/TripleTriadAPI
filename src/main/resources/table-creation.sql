@@ -6,7 +6,7 @@ create table app_user
 (
     id            uuid UNIQUE        NOT NULL DEFAULT uuid_generate_v4(),
     username      VARCHAR(32) UNIQUE NOT NULL CHECK (LENGTH(username) >= 2),
-    password      VARCHAR(128)       NOT NULL CHECK (LENGTH(password) >= 6),
+    password      VARCHAR(128)       NOT NULL CHECK (LENGTH(password) >= 7),
     account_type  VARCHAR(16)        NOT NULL DEFAULT 'BASIC' CHECK (account_type IN ('DEV', 'ADMIN', 'BASIC', 'BANNED')),
     creation_date DATE               NOT NULL DEFAULT CURRENT_DATE,
     last_updated  DATE               NOT NULL DEFAULT CURRENT_DATE
@@ -50,13 +50,4 @@ create table collection_card
 
     CONSTRAINT collection_card_pk
         PRIMARY KEY (collection_id, card_id)
-);
-
-create table deck_collection_card
-(
-    deck_id INT REFERENCES deck (id) ON DELETE CASCADE,
-    card_id INT REFERENCES collection_card (card_id) ON DELETE CASCADE,
-
-    CONSTRAINT deck_card_pk
-        PRIMARY KEY (deck_id, card_id)
 );
