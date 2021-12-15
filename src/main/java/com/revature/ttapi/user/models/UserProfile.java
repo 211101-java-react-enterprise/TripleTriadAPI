@@ -1,7 +1,7 @@
 package com.revature.ttapi.user.models;
 
-import com.revature.ttapi.user.constraints.EmailTLD;
-import com.revature.ttapi.user.constraints.Uuid;
+import com.revature.ttapi.user.validators.Uuid;
+import com.revature.ttapi.user.validators.email.ValidEmail;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
@@ -35,7 +35,7 @@ public class UserProfile {
     @Column(name = "email",
             unique = true,
             nullable = false)
-    @EmailTLD
+    @ValidEmail
     private String email;
 
     @Column(name = "first_name",

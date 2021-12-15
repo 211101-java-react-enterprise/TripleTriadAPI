@@ -1,59 +1,108 @@
 package com.revature.ttapi.user.models;
 
 import com.revature.ttapi.collection.CardCollection;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.validator.constraints.Range;
+import com.revature.ttapi.user.dtos.requests.EditUserRequest;
+import com.revature.ttapi.user.dtos.requests.UserRequest;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-@Table(name = "app_users")
-public class AppUser {
+@Table(name = "app_user")
+public class AppUser implements Serializable {
 
+    @Column(name = "enabled")
+    private final boolean enabled;
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(name = "user_id", columnDefinition = "uuid", nullable = false)
+    @GeneratedValue
+    @Column(name = "id",
+            columnDefinition = "uuid DEFAULT uuid_generate_v4()")
     private UUID id;
-
-    @Column(nullable = false, unique = true, columnDefinition = "VARCHAR CHECK (LENGTH(email) > 0)")
-    private String email;
-
-    @Column(nullable = false, updatable = false, unique = true, columnDefinition = "VARCHAR(24) CHECK (LENGTH(username) >= 4)")
-    private String username;
-
-    @Column(nullable = false, columnDefinition = "VARCHAR(255) CHECK (LENGTH(password) >= 6)")
-    private String password;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "account_type", nullable = false, columnDefinition = "VARCHAR DEFAULT 'LOCKED'")
-    private AccountType accountType;
-
-    @Range(min = 0, max = 9999)
-    @Column(nullable = false, columnDefinition = "INT DEFAULT 0")
-    private int mgp;
-
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(
+            mappedBy = "appUser",
+            fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE,
+                    CascadeType.DETACH,
+                    CascadeType.REFRESH
+            }
+    )
+    @PrimaryKeyJoinColumn
+    private UserProfile userProfile;
+    @OneToOne(
+            //https://stackoverflow.com/questions/14585836/hibernate-many-to-many-cascading-delete
+            mappedBy = "user",
+            fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE,
+                    CascadeType.DETACH,
+                    CascadeType.REFRESH
+            },
+            orphanRemoval = true)
     @PrimaryKeyJoinColumn
     private CardCollection cardCollection;
+    @NaturalId
+    @Column(name = "username",
+            unique = true,
+            nullable = false)
+    private String username;
+    @Column(name = "password",
+            nullable = false)
+    private String password;
+    @Column(name = "creation_date",
+            nullable = false)
+    private Date creationDate;
+    @Column(name = "last_updated",
+            nullable = false)
+    private Date lastUpdated;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "account_type",
+            nullable = false)
+    private AccountType accountType;
+
+    public AppUser() {
+        super();
+        this.accountType = AccountType.BASIC;
+        this.creationDate = new Date();
+        this.lastUpdated = new Date();
+        this.enabled = false;
+    }
+
+    public AppUser(String username, String password) {
+        this();
+        this.username = username;
+        this.password = password;
+    }
+
+    public static AppUser fromRequest(EditUserRequest editRequest) {
+        AppUser newUser = new AppUser(
+                editRequest.getUsername(),
+                editRequest.getPassword()
+        );
+        newUser.setId(editRequest.getId());
+        newUser.setAccountType(editRequest.getAccountType());
+        return newUser;
+    }
+
+    public static AppUser fromRequest(UserRequest userRequest) {
+        return new AppUser(
+                userRequest.getUsername(),
+                userRequest.getPassword()
+        );
+    }
 
     public UUID getId() {
-        return id;
+        return this.id;
     }
 
-    // TODO: Refactor user constructor to take a Builder so private
-    // values can be set and unneeded setters can be removed.
     public void setId(UUID id) {
         this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getUsername() {
@@ -80,20 +129,41 @@ public class AppUser {
         this.accountType = accountType;
     }
 
-    public int getMgp() {
-        return mgp;
+    @PrePersist
+    public void onPersist() {
+        this.creationDate = new Date();
     }
 
-    public void setMgp(int mgp) {
-        this.mgp = mgp;
+    @PreUpdate
+    public void onUpdate() {
+        this.lastUpdated = new Date();
     }
 
-    public CardCollection getCardCollection() {
-        return cardCollection;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AppUser appUser = (AppUser) o;
+        return id.equals(appUser.id) && userProfile.equals(appUser.userProfile) && cardCollection.equals(appUser.cardCollection) && username.equals(appUser.username) && password.equals(appUser.password) && creationDate.equals(appUser.creationDate) && lastUpdated.equals(appUser.lastUpdated) && accountType == appUser.accountType;
     }
 
-    public void setCardCollection(CardCollection cardCollection) {
-        this.cardCollection = cardCollection;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, userProfile, cardCollection, username, password, creationDate, lastUpdated, accountType);
+    }
+
+    @Override
+    public String toString() {
+        return "AppUser{" +
+                "id=" + id +
+                ", userProfile=" + userProfile +
+                ", cardCollection=" + cardCollection +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", creationDate=" + creationDate +
+                ", lastUpdated=" + lastUpdated +
+                ", accountType=" + accountType +
+                '}';
     }
 
     public enum AccountType {
