@@ -1,4 +1,4 @@
-package com.revature.ttapi.models.card;
+package com.revature.ttapi.card.models;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.revature.ttapi.card.models.StatsDeserializer;
 
 import java.io.IOException;
 
