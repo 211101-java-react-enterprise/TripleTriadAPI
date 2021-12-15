@@ -101,5 +101,11 @@ public class CardService {
         return (card.getStars() < 1 || (card.getStars() > 5));
     }
 
+    @Transactional
+    public void importCards(Card[] list){
+        for (Card c: list) {
+            cardRepo.save(c);
+        }
+    }
 }
 
