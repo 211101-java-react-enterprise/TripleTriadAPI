@@ -21,7 +21,7 @@ public class AuthController {
     public AuthController(UserService userService) {
         this.userService = userService;
     }
-
+    userService.authenticateUser didn't exist when I pulled this down
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PostMapping(consumes = "application/json")
     public void login(@RequestBody LoginRequest loginRequest, HttpSession session) throws HTTPException {

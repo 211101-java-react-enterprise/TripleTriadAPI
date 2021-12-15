@@ -89,12 +89,12 @@ Using numeric version of stats
 
     private static int count = 0;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Column(name = "id", columnDefinition = "serial")
     private int id;
     @Column(name = "name", columnDefinition = "varchar(255)")
     private String name;
-    @Column(name = "description", columnDefinition = "varchar(255)")
+    @Column(name = "description", columnDefinition = "varchar(1080)")
     private String description;
     @Column(name = "stars", columnDefinition = "int")
     private int stars;
