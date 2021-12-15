@@ -1,7 +1,7 @@
 package com.revature.ttapi.auth;
 
 import com.revature.ttapi.auth.dtos.request.LoginRequest;
-import com.revature.ttapi.user.AppUser;
+import com.revature.ttapi.user.models.AppUser;
 import com.revature.ttapi.user.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +18,8 @@ public class AuthController {
     public AuthController(UserService userService) {
         this.userService = userService;
     }
-
+/*
+    userService.authenticateUser didn't exist when I pulled this down
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PostMapping(consumes = "application/json")
     public void login(@RequestBody LoginRequest loginRequest, HttpSession session) {
@@ -26,6 +27,7 @@ public class AuthController {
                 userService.authenticateUser(loginRequest.getUsername(), loginRequest.getPassword());
         session.setAttribute("authUser", authUser);
     }
+*/
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
