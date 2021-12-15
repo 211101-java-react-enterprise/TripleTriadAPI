@@ -11,8 +11,8 @@ import java.util.UUID;
 @Repository
 public interface UserRepository extends JpaRepository<AppUser, UUID> {
 
-    Optional<AppUser> findAppUserByUsername(String username);
+    Optional<AppUser> findByUsername(String username);
 
     @Query("from AppUser au where au.username = :username and au.password = :password")
-    Optional<AppUser> findUserByUsernameAndPassword(String username, String password);
+    Optional<AppUser> findByUsernameAndPassword(String username, String password);
 }
