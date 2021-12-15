@@ -11,15 +11,6 @@ import java.util.Arrays;
 @SpringBootApplication
 public class TtapiApplication {
     public static void main(String[] args) {
-                FetchCards f = new FetchCards();
-
-                Card[] a = new Card[0];
-
-                try {
-                    a = f.generateArray();
-                } catch (JsonProcessingException e) {
-                    e.printStackTrace();
-                }
         SpringApplication.run(TtapiApplication.class, args);
     }
 }
