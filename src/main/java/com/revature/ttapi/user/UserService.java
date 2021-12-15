@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -36,5 +37,9 @@ public class UserService {
     @Transactional
     public boolean usernameExists(String username) {
         return userRepo.findByUsername(username).isPresent();
+    }
+
+    public Optional<AppUser> authenticateUser(String username, String password) {
+        return userRepo.findByUsernameAndPassword(username, password);
     }
 }
