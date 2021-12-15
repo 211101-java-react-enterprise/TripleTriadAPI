@@ -1,9 +1,9 @@
 package com.revature.ttapi.user.dtos.responses;
 
-import com.revature.ttapi.user.constraints.Username;
-import com.revature.ttapi.user.constraints.Uuid;
 import com.revature.ttapi.user.models.AppUser;
 import com.revature.ttapi.user.models.UserProfile;
+import com.revature.ttapi.user.validators.Username;
+import com.revature.ttapi.user.validators.Uuid;
 
 import java.util.Objects;
 import java.util.UUID;

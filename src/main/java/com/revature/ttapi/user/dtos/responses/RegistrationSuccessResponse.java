@@ -1,6 +1,6 @@
 package com.revature.ttapi.user.dtos.responses;
 
-import com.revature.ttapi.user.constraints.Uuid;
+import com.revature.ttapi.user.validators.Uuid;
 
 import java.util.UUID;
 
