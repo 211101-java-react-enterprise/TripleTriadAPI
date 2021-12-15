@@ -3,6 +3,7 @@ package com.revature.ttapi.user.dtos.responses;
 import com.revature.ttapi.user.constraints.Username;
 import com.revature.ttapi.user.constraints.Uuid;
 import com.revature.ttapi.user.models.AppUser;
+import com.revature.ttapi.user.models.UserProfile;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -15,13 +16,15 @@ public class UserResponse {
     @Username
     private String username;
 
+    private UserProfile userProfile;
+
     public UserResponse() {
         super();
     }
 
-    public UserResponse(AppUser appUser) {
-        this.id = appUser.getId();
-        this.username = appUser.getUsername();
+    public UserResponse(AppUser record) {
+        this.id = record.getId();
+        this.username = record.getUsername();
     }
 
     @Override

@@ -23,8 +23,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 public @interface Password {
     String message() default "Invalid Password";
-
     Class<?>[] groups() default {};
-
     Class<? extends Payload>[] payload() default {};
 }
