@@ -1,4 +1,4 @@
-package com.revature.ttapi.user;
+package com.revature.ttapi.user.models;
 
 import com.revature.ttapi.collection.CardCollection;
 import org.hibernate.annotations.GenericGenerator;

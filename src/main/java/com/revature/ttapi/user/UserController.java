@@ -4,15 +4,15 @@ import com.revature.ttapi.common.util.web.Authenticated;
 import com.revature.ttapi.common.util.web.RequesterOwned;
 import com.revature.ttapi.common.util.web.Secured;
 import com.revature.ttapi.user.dtos.requests.EditUserRequest;
-import com.revature.ttapi.user.dtos.requests.NewRegistrationRequest;
-import com.revature.ttapi.user.dtos.responses.RegistrationSuccessResponse;
+import com.revature.ttapi.user.dtos.requests.RegistrationRequest;
 import com.revature.ttapi.user.dtos.responses.UserResponse;
+import com.revature.ttapi.user.models.AppUser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -21,8 +21,17 @@ public class UserController {
 
     private final UserService userService;
 
+    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping("/{username}")
+    @ResponseStatus(HttpStatus.OK)
+    public void checkUsernameAvailability(@PathVariable String username) {
+        if (userService.isUsernameAvailable(username)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 
     @Authenticated
@@ -32,22 +41,10 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @GetMapping(params = "username")
-    public ResponseEntity<Void> checkUsernameAvailability(@RequestParam String username) {
-        return userService.isUsernameAvailable(username) ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(
-            HttpStatus.CONFLICT);
-    }
-
-    @GetMapping(params = "email")
-    public ResponseEntity<Void> checkEmailAvailability(@RequestParam String email) {
-        return userService.isEmailAvailable(email) ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(
-            HttpStatus.CONFLICT);
-    }
-
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(consumes = "application/json", produces = "application/json")
-    public RegistrationSuccessResponse register(@RequestBody @Valid NewRegistrationRequest newRegistrationRequest) {
-        return userService.registerNewUser(newRegistrationRequest);
+    public UserResponse register(@RequestBody RegistrationRequest registrationRequest) {
+        return userService.registerNewUser(registrationRequest);
     }
 
     @Authenticated

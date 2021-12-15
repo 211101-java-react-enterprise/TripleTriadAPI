@@ -2,16 +2,10 @@ package com.revature.ttapi.user.dtos.requests;
 
 import com.revature.ttapi.user.constraints.Password;
 import com.revature.ttapi.user.constraints.Username;
-import com.revature.ttapi.user.constraints.Uuid;
-import com.revature.ttapi.user.models.AppUser;
 
 import java.util.Objects;
-import java.util.UUID;
 
-public class EditUserRequest {
-
-    @Uuid
-    private UUID id;
+public class RegistrationRequest {
 
     @Username
     private String username;
@@ -19,19 +13,13 @@ public class EditUserRequest {
     @Password
     private String password;
 
-    private AppUser.AccountType accountType;
-
-    public EditUserRequest() {
+    public RegistrationRequest() {
         super();
-        this.accountType = AppUser.AccountType.BASIC;
     }
 
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
+    public RegistrationRequest(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
     public String getUsername() {
@@ -50,34 +38,24 @@ public class EditUserRequest {
         this.password = password;
     }
 
-    public AppUser.AccountType getAccountType() {
-        return accountType;
-    }
-
-    public void setAccountType(AppUser.AccountType accountType) {
-        this.accountType = accountType;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        EditUserRequest that = (EditUserRequest) o;
-        return id.equals(that.id) && username.equals(that.username) && password.equals(that.password) && accountType == that.accountType;
+        RegistrationRequest that = (RegistrationRequest) o;
+        return username.equals(that.username) && password.equals(that.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, accountType);
+        return Objects.hash(username, password);
     }
 
     @Override
     public String toString() {
-        return "EditUserRequest{" +
-                "id='" + id + '\'' +
+        return "NewRegistrationRequest{" +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", accountType=" + accountType +
                 '}';
     }
 }

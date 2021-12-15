@@ -1,50 +1,47 @@
 package com.revature.ttapi.user.dtos.responses;
 
-import com.revature.ttapi.user.AppUser;
+import com.revature.ttapi.user.constraints.Username;
+import com.revature.ttapi.user.constraints.Uuid;
+import com.revature.ttapi.user.models.AppUser;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class UserResponse {
 
-    private UUID userId;
+    @Uuid
+    private UUID id;
+
+    @Username
     private String username;
-    private String email;
 
     public UserResponse() {
         super();
     }
 
-    public UserResponse(AppUser creator) {
-        this.userId = creator.getId();
-        this.username = creator.getUsername();
+    public UserResponse(AppUser appUser) {
+        this.id = appUser.getId();
+        this.username = appUser.getUsername();
     }
 
-    public UUID getUserId() {
-        return userId;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserResponse that = (UserResponse) o;
+        return id.equals(that.id) && username.equals(that.username);
     }
 
-    public void setUserId(UUID userId) {
-        this.userId = userId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username);
     }
 
     @Override
     public String toString() {
-        return "UserResponse{" + "userId=" + userId + ", username='" + username + '\'' + ", email='" + email + '\'' + '}';
+        return "UserResponse{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                '}';
     }
 }
