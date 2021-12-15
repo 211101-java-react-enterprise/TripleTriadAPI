@@ -11,3 +11,4 @@ target/
 # Properties files
 *.properties
 *.log
+*.yml
