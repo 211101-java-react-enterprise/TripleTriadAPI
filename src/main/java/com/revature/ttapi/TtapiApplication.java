@@ -1,8 +1,5 @@
 package com.revature.ttapi;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.revature.ttapi.card.models.Card;
-import com.revature.ttapi.card.services.FetchCards;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
