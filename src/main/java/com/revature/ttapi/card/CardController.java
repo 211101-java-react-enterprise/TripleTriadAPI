@@ -21,7 +21,7 @@ public class CardController {
 
     @GetMapping("/fetchall")
     @ResponseStatus(HttpStatus.CREATED)
-    @Scheduled(cron = "0 03 * * TUE")
+    @Scheduled(cron = "0 03 * * TUE", zone = "US/Central")
     public void checkUsernameAvailability() throws JsonProcessingException {
         FetchCards f = new FetchCards();
         Card[] a = f.generateArray();
