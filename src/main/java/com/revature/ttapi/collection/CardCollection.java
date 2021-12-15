@@ -1,7 +1,7 @@
 package com.revature.ttapi.collection;
 
 import com.revature.ttapi.models.card.Card;
-import com.revature.ttapi.user.AppUser;
+import com.revature.ttapi.user.models.AppUser;
 
 import javax.persistence.*;
 import java.util.Objects;

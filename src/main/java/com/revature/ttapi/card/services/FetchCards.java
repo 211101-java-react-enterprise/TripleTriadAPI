@@ -1,17 +1,15 @@
-package com.revature.ttapi.services;
+package com.revature.ttapi.card.services;
 
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.revature.ttapi.models.card.Card;
-import com.revature.ttapi.models.card.CardDeserializer;
+import com.revature.ttapi.card.models.Card;
+import com.revature.ttapi.card.models.CardDeserializer;
 
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 
 public class FetchCards {
 
@@ -24,6 +22,7 @@ public class FetchCards {
         }
         return sb.toString();
     }
+
     private String fetch() {
         StringBuilder sb = new StringBuilder();
         String url = "https://triad.raelys.com/api/cards";
@@ -58,8 +57,10 @@ public class FetchCards {
         om.registerModule(module);
         //it's apparently just this easy
         System.out.println(top.get("results"));
-        Card[] a = om.readValue(top.get("results").toString(), Card[].class);
-        Card.setCount(top.get("count").asInt());
+        Card[] a = om.readValue(top.get("results")
+                                   .toString(), Card[].class);
+        Card.setCount(top.get("count")
+                         .asInt());
         return a;
     }
 }

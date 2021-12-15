@@ -1,4 +1,4 @@
-package com.revature.ttapi.models.card;
+package com.revature.ttapi.card.models;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -17,17 +17,23 @@ public class CardDeserializer extends StdDeserializer<Card> {
 
     @Override
     public Card deserialize(JsonParser jp, DeserializationContext deserializationContext) throws IOException {
-        JsonNode cardNode = jp.getCodec().readTree(jp);
+        JsonNode cardNode = jp.getCodec()
+                              .readTree(jp);
         Card card = new Card();
         SimpleModule smodule = new SimpleModule();
         smodule.addDeserializer(Stats.class, new StatsDeserializer(Stats.class));
-        card.setId(cardNode.get("id").asInt());
-        card.setName(cardNode.get("name").textValue());
-        card.setStars(cardNode.get("stars").asInt());
-        card.setDescription(cardNode.get("description").textValue());
+        card.setId(cardNode.get("id")
+                           .asInt());
+        card.setName(cardNode.get("name")
+                             .textValue());
+        card.setStars(cardNode.get("stars")
+                              .asInt());
+        card.setDescription(cardNode.get("description")
+                                    .textValue());
         card.setStats(new ObjectMapper()
                 .readerFor(Stats.class)
-                .readValue(cardNode.get("stats").get("numeric")));
+                .readValue(cardNode.get("stats")
+                                   .get("numeric")));
         return card;
     }
 }
