@@ -1,4 +1,4 @@
-package com.revature.ttapi.models.card;
+package com.revature.ttapi.card.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -89,7 +89,8 @@ Using numeric version of stats
 
     private static int count = 0;
     @Id
-    @Column(name = "card_id", columnDefinition = "serial")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", columnDefinition = "serial")
     private int id;
     @Column(name = "name", columnDefinition = "varchar(255)")
     private String name;
