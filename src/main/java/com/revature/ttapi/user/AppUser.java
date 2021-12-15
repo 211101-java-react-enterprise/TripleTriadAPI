@@ -1,46 +1,52 @@
 package com.revature.ttapi.user;
 
-import org.hibernate.validator.constraints.Range;
-
 import com.revature.ttapi.models.card.Card;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "app_users")
 public class AppUser {
 
     @Id
-    @Column(name = "user_id")
-    private String id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "user_id", columnDefinition = "uuid", updatable = false, unique = true, nullable = false)
+    private UUID id;
 
     @Column(nullable = false, unique = true, columnDefinition = "VARCHAR CHECK (LENGTH(email) > 0)")
     private String email;
 
-    @Column(nullable = false, unique = true, columnDefinition = "VARCHAR CHECK (LENGTH(username) >= 0)")
+    @Column(nullable = false, updatable = false, unique = true, columnDefinition = "VARCHAR(24) CHECK (LENGTH(username) >= 4)")
     private String username;
 
-    @Column(nullable = false, unique = true, columnDefinition = "VARCHAR CHECK (LENGTH(password) >= 0)")
+    @Column(nullable = false, columnDefinition = "VARCHAR(255) CHECK (LENGTH(password) >= 4)")
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "account_type", columnDefinition = "VARCHAR DEFAULT 'LOCKED'")
+    @Column(name = "account_type", nullable = false, columnDefinition = "VARCHAR DEFAULT 'LOCKED'")
     private AccountType accountType;
 
     @Range(min = 0, max = 9999)
     @Column(nullable = false, columnDefinition = "INT DEFAULT 0")
     private int mgp;
 
-    @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "user_cards", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "card_id"))
     private Set<Card> cards = new HashSet<>();
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    // TODO: Refactor user constructor to take a Builder so private
+    // values can be set and unneeded setters can be removed.
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -93,7 +99,12 @@ public class AppUser {
     }
 
     public enum AccountType {
-        ADMIN, DEV, BASIC, PREMIUM, LOCKED, BANNED
+        ADMIN,
+        DEV,
+        BASIC,
+        PREMIUM,
+        LOCKED,
+        BANNED
     }
 
 }

@@ -1,10 +1,14 @@
 package com.revature.ttapi.user.dtos.requests;
 
-import com.revature.ttapi.common.dtos.EditResourceRequest;
 import com.revature.ttapi.user.AppUser;
 
-public class EditUserRequest extends EditResourceRequest {
+import javax.validation.constraints.NotBlank;
+import java.util.UUID;
 
+public class EditUserRequest {
+
+    @NotBlank
+    private UUID id;
     private String email;
     private String password;
     private int mgp;
@@ -29,6 +33,18 @@ public class EditUserRequest extends EditResourceRequest {
         this.password = password;
     }
 
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public void setId(String id) {
+        this.id = UUID.fromString(id);
+    }
+
     public AppUser extractUser() {
         AppUser user = new AppUser();
         user.setId(id);
@@ -40,11 +56,7 @@ public class EditUserRequest extends EditResourceRequest {
 
     @Override
     public String toString() {
-        return "EditUserRequest{" +
-                "id='" + id + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+        return "EditUserRequest{" + "id='" + id + '\'' + ", email='" + email + '\'' + ", password='" + password + '\'' + '}';
     }
 
 }

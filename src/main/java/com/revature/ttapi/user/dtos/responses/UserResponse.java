@@ -2,12 +2,13 @@ package com.revature.ttapi.user.dtos.responses;
 
 import com.revature.ttapi.user.AppUser;
 
+import java.util.UUID;
+
 public class UserResponse {
 
-    private String userId;
-    private String firstName;
-    private String lastName;
+    private UUID userId;
     private String username;
+    private String email;
 
     public UserResponse() {
         super();
@@ -18,11 +19,11 @@ public class UserResponse {
         this.username = creator.getUsername();
     }
 
-    public String getUserId() {
+    public UUID getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(UUID userId) {
         this.userId = userId;
     }
 
@@ -34,12 +35,16 @@ public class UserResponse {
         this.username = username;
     }
 
-    @Override
-    public String toString() {
-        return "UserReponse{" +
-                "userId='" + userId + '\'' +
-                ", username='" + username + '\'' +
-                '}';
+    public String getEmail() {
+        return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "UserResponse{" + "userId=" + userId + ", username='" + username + '\'' + ", email='" + email + '\'' + '}';
+    }
 }

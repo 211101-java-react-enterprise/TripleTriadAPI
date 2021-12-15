@@ -5,11 +5,13 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface UserRepository extends CrudRepository<AppUser, String> {
+public interface UserRepository extends CrudRepository<AppUser, UUID> {
 
     Optional<AppUser> findAppUserByUsername(String username);
+
     Optional<AppUser> findAppUserByEmail(String email);
 
     @Query("from AppUser au where au.username = :username and au.password = :password")
