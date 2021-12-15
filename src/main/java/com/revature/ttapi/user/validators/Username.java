@@ -1,4 +1,4 @@
-package com.revature.ttapi.user.constraints;
+package com.revature.ttapi.user.validators;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
