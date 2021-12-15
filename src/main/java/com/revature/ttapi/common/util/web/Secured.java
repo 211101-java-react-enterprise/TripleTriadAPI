@@ -1,7 +1,6 @@
 package com.revature.ttapi.common.util.web;
 
-import com.revature.ttapi.user.AppUser;
-import com.revature.ttapi.user.AppUser;
+import com.revature.ttapi.user.models.AppUser;
 
 import java.lang.annotation.*;
 
