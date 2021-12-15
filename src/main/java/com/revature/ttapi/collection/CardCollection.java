@@ -6,6 +6,7 @@ import com.revature.ttapi.user.models.AppUser;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -30,7 +31,6 @@ public class CardCollection {
     private Set<Deck> decks;
 
     @ManyToMany(
-            mappedBy = "collections",
             fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
@@ -38,7 +38,15 @@ public class CardCollection {
                     CascadeType.DETACH,
                     CascadeType.REFRESH
             })
-    private Set<Card> cards;
+    @JoinTable(
+            name = "collection_card",
+            joinColumns = @JoinColumn(
+                    name = "collection_id",
+                    referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "card_id",
+                    referencedColumnName = "id"))
+    private Set<Card> cards = new HashSet<>();
 
     @Size(min = 0, max = 9999)
     @Column(name = "mgp",

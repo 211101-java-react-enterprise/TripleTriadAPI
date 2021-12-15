@@ -1,26 +1,19 @@
 package com.revature.ttapi.user.dtos.requests;
 
 import com.revature.ttapi.common.dtos.PasswordForm;
-import com.revature.ttapi.user.validators.Username;
-import com.revature.ttapi.user.validators.password.PasswordMatch;
-import com.revature.ttapi.user.validators.password.ValidPassword;
 
 import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
-@PasswordMatch
 public class UserRequest implements PasswordForm {
 
     @NotBlank
-    @Username
     private String username;
 
     @NotBlank
-    @ValidPassword
     private String password;
 
     @NotBlank
-    @ValidPassword
     private String matchingPassword;
 
     public String getUsername() {

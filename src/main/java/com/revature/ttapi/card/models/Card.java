@@ -2,12 +2,8 @@ package com.revature.ttapi.card.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.revature.ttapi.collection.CardCollection;
-import com.revature.ttapi.collection.Deck;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 
 @Entity
@@ -106,42 +102,6 @@ Using numeric version of stats
     @Transient
     private Stats stats;
 
-    @ManyToMany(
-            fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE,
-                    CascadeType.DETACH,
-                    CascadeType.REFRESH
-            })
-    @JoinTable(
-            name = "collection_card",
-            joinColumns = @JoinColumn(
-                    name = "card_id",
-                    referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "collection_id",
-                    referencedColumnName = "id"))
-    private Set<CardCollection> collections = new HashSet<>();
-
-    @ManyToMany(
-            fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE,
-                    CascadeType.DETACH,
-                    CascadeType.REFRESH
-            })
-    @JoinTable(
-            name = "deck_card",
-            joinColumns = @JoinColumn(
-                    name = "card_id",
-                    referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "deck_id",
-                    referencedColumnName = "id"))
-    private Set<Deck> decks = new HashSet<>();
-
     public Card() {
     }
 
@@ -169,22 +129,6 @@ Using numeric version of stats
     //for adding or removing some number to/from the count
     public static void addCount(int count) {
         Card.count += count;
-    }
-
-    public Set<CardCollection> getCollections() {
-        return collections;
-    }
-
-    public void setCollections(Set<CardCollection> collections) {
-        this.collections = collections;
-    }
-
-    public Set<Deck> getDecks() {
-        return decks;
-    }
-
-    public void setDecks(Set<Deck> decks) {
-        this.decks = decks;
     }
 
     public int getId() {

@@ -1,22 +1,16 @@
 package com.revature.ttapi.user.dtos.requests;
 
 import com.revature.ttapi.user.models.AppUser;
-import com.revature.ttapi.user.validators.Username;
-import com.revature.ttapi.user.validators.Uuid;
-import com.revature.ttapi.user.validators.password.ValidPassword;
 
 import java.util.Objects;
 import java.util.UUID;
 
 public class EditUserRequest {
 
-    @Uuid
     private UUID id;
 
-    @Username
     private String username;
 
-    @ValidPassword
     private String password;
 
     private AppUser.AccountType accountType;

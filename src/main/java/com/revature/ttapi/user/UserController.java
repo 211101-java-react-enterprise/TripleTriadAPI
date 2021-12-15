@@ -4,7 +4,6 @@ import com.revature.ttapi.common.exceptions.AccountExistsException;
 import com.revature.ttapi.user.dtos.requests.UserRequest;
 import com.revature.ttapi.user.dtos.responses.UserResponse;
 import com.revature.ttapi.user.models.AppUser;
-import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -17,7 +16,6 @@ import javax.validation.Valid;
 public class UserController {
 
 
-    private final Logger logger = (Logger) LogFactory.getLog(UserController.class);
 
     private final UserService userService;
 
@@ -36,12 +34,10 @@ public class UserController {
     @PostMapping("/registration")
     @ResponseStatus(HttpStatus.CREATED)
     public UserResponse registerAccount(@Valid UserRequest userRequest, HttpServletRequest servletRequest) {
-        logger.debug("Registering user account with information: {}", userRequest);
         try {
             AppUser registeredUser = userService.registerNewUserAccount(userRequest);
             return new UserResponse(registeredUser);
         } catch (AccountExistsException e) {
-            logger.error(String.valueOf(e));
             return null;
         }
     }

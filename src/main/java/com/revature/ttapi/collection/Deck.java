@@ -23,15 +23,7 @@ public class Deck {
     )
     private CardCollection cardCollection;
 
-    @ManyToMany(
-            mappedBy = "decks",
-            fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE,
-                    CascadeType.DETACH,
-                    CascadeType.REFRESH
-            })
+    @Transient
     private Set<Card> cards;
 
     public int getId() {

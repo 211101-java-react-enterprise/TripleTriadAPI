@@ -15,8 +15,6 @@ import java.util.UUID;
 @Table(name = "app_user")
 public class AppUser implements Serializable {
 
-    @Column(name = "enabled")
-    private final boolean enabled;
     @Id
     @GeneratedValue
     @Column(name = "id",
@@ -71,7 +69,6 @@ public class AppUser implements Serializable {
         this.accountType = AccountType.BASIC;
         this.creationDate = new Date();
         this.lastUpdated = new Date();
-        this.enabled = false;
     }
 
     public AppUser(String username, String password) {
