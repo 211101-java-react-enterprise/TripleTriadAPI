@@ -5,6 +5,7 @@ import com.revature.ttapi.card.models.Card;
 import com.revature.ttapi.card.services.CardService;
 import com.revature.ttapi.card.services.FetchCards;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -20,6 +21,7 @@ public class CardController {
 
     @GetMapping("/fetchall")
     @ResponseStatus(HttpStatus.CREATED)
+    @Scheduled(cron = "0 03 * * TUE")
     public void checkUsernameAvailability() throws JsonProcessingException {
         FetchCards f = new FetchCards();
         Card[] a = f.generateArray();
