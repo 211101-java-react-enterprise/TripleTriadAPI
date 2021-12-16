@@ -17,8 +17,7 @@ public class AppUser implements Serializable {
 
     @Id
     @GeneratedValue
-    @Column(name = "id",
-            columnDefinition = "uuid DEFAULT uuid_generate_v4()")
+    @Column(name = "id")
     private UUID id;
     @OneToOne(
             mappedBy = "appUser",
@@ -66,6 +65,7 @@ public class AppUser implements Serializable {
 
     public AppUser() {
         super();
+        this.id = UUID.randomUUID();
         this.accountType = AccountType.BASIC;
         this.creationDate = new Date();
         this.lastUpdated = new Date();
@@ -124,6 +124,38 @@ public class AppUser implements Serializable {
 
     public void setAccountType(AccountType accountType) {
         this.accountType = accountType;
+    }
+
+    public UserProfile getUserProfile() {
+        return userProfile;
+    }
+
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
+    }
+
+    public CardCollection getCardCollection() {
+        return cardCollection;
+    }
+
+    public void setCardCollection(CardCollection cardCollection) {
+        this.cardCollection = cardCollection;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public Date getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(Date lastUpdated) {
+        this.lastUpdated = lastUpdated;
     }
 
     @PrePersist

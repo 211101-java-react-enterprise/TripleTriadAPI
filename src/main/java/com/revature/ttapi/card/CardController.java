@@ -1,6 +1,8 @@
 package com.revature.ttapi.card;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.revature.ttapi.card.dtos.requests.CardRequest;
+import com.revature.ttapi.card.dtos.responses.CardResponse;
 import com.revature.ttapi.card.models.Card;
 import com.revature.ttapi.card.services.CardService;
 import com.revature.ttapi.card.services.FetchCards;
@@ -22,10 +24,16 @@ public class CardController {
     @GetMapping("/fetchall")
     @ResponseStatus(HttpStatus.CREATED)
     @Scheduled(cron = "0 03 * * TUE", zone = "US/Central")
-    public void checkUsernameAvailability() throws JsonProcessingException {
+    public void fetchAllCards() throws JsonProcessingException {
         FetchCards f = new FetchCards();
         Card[] a = f.generateArray();
         cardService.importCards(a);
+    }
+
+    @PostMapping(value = "/fetch")
+    @ResponseStatus(HttpStatus.OK)
+    public CardResponse fetchCard(@RequestBody CardRequest request) throws JsonProcessingException {
+        return cardService.findCardById(request.getId());
     }
 
     @ExceptionHandler

@@ -26,9 +26,14 @@ public class UserResponse implements Serializable {
         super();
     }
 
+
     public UserResponse(AppUser record) {
         this.id = record.getId();
         this.username = record.getUsername();
+        this.accountType = record.getAccountType();
+        this.creation_date = record.getCreationDate();
+        this.last_updated = record.getLastUpdated();
+        this.userProfile = record.getUserProfile();
     }
 
     @Override

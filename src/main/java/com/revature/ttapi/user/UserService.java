@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -26,7 +27,10 @@ public class UserService {
                     + userRequest.getUsername());
         }
         AppUser user = AppUser.fromRequest(userRequest);
-        return userRepo.save(user);
+        user = userRepo.save(user);
+        user = userRepo.getById(user.getId());
+        System.out.println(user);
+        return user;
     }
 
     @Transactional
@@ -41,5 +45,15 @@ public class UserService {
 
     public Optional<AppUser> authenticateUser(String username, String password) {
         return userRepo.findByUsernameAndPassword(username, password);
+    }
+
+    @Transactional
+    public void deleteUser(String username){
+        userRepo.deleteByUsername(username);
+    }
+
+    @Transactional
+    public AppUser getUser(String username) throws NoSuchElementException {
+        return userRepo.findByUsername(username).get();
     }
 }
