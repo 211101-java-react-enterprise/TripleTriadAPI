@@ -45,4 +45,9 @@ public class UserService {
     public Optional<AppUser> authenticateUser(String username, String password) {
         return userRepo.findByUsernameAndPassword(username, password);
     }
+
+    @Transactional
+    public AppUser getUser(String username){
+        return userRepo.findByUsername(username).orElse(null);
+    }
 }
