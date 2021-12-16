@@ -13,3 +13,6 @@ target/
 *.properties
 *.log
 *.yml
+
+#Database Files
+*.db

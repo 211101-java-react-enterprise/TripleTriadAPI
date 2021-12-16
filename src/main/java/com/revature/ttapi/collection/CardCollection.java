@@ -32,12 +32,7 @@ public class CardCollection {
 
     @ManyToMany(
             fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE,
-                    CascadeType.DETACH,
-                    CascadeType.REFRESH
-            })
+            cascade = CascadeType.ALL)
     @JoinTable(
             name = "collection_card",
             joinColumns = @JoinColumn(
