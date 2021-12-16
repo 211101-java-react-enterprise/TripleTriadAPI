@@ -23,7 +23,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("/usernamecheck/{username}")
     @ResponseStatus(HttpStatus.OK)
     public void checkUsernameAvailability(@PathVariable String username) {
         if (userService.usernameExists(username)) {
@@ -31,9 +31,9 @@ public class UserController {
         }
     }
 
-    @PostMapping("/registration")
+    @PostMapping(value = "/registration", consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserResponse registerAccount(@Valid UserRequest userRequest, HttpServletRequest servletRequest) {
+    public @ResponseBody UserResponse registerAccount(@Valid @RequestBody UserRequest userRequest, HttpServletRequest servletRequest) {
         try {
             AppUser registeredUser = userService.registerNewUserAccount(userRequest);
             return new UserResponse(registeredUser);
@@ -41,4 +41,5 @@ public class UserController {
             return null;
         }
     }
+
 }

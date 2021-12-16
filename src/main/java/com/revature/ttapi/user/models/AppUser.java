@@ -126,6 +126,38 @@ public class AppUser implements Serializable {
         this.accountType = accountType;
     }
 
+    public UserProfile getUserProfile() {
+        return userProfile;
+    }
+
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
+    }
+
+    public CardCollection getCardCollection() {
+        return cardCollection;
+    }
+
+    public void setCardCollection(CardCollection cardCollection) {
+        this.cardCollection = cardCollection;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public Date getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(Date lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
+
     @PrePersist
     public void onPersist() {
         this.creationDate = new Date();

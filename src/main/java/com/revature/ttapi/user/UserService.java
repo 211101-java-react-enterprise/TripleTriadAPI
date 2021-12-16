@@ -26,7 +26,10 @@ public class UserService {
                     + userRequest.getUsername());
         }
         AppUser user = AppUser.fromRequest(userRequest);
-        return userRepo.save(user);
+        user = userRepo.save(user);
+        user = userRepo.getById(user.getId());
+        System.out.println(user);
+        return user;
     }
 
     @Transactional
