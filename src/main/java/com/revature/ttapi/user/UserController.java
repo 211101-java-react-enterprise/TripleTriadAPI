@@ -67,6 +67,12 @@ public class UserController {
 
     }
 
+    @PostMapping(value = "/delete", consumes = "text/plain")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteUser(@RequestBody String username) {
+        userService.deleteUser(username);
+    }
+
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public void error(NoSuchElementException e){

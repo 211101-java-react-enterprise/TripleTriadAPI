@@ -48,6 +48,11 @@ public class UserService {
     }
 
     @Transactional
+    public void deleteUser(String username){
+        userRepo.deleteByUsername(username);
+    }
+
+    @Transactional
     public AppUser getUser(String username) throws NoSuchElementException {
         return userRepo.findByUsername(username).get();
     }

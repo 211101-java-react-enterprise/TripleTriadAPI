@@ -13,6 +13,8 @@ public interface UserRepository extends JpaRepository<AppUser, UUID> {
 
     Optional<AppUser> findByUsername(String username);
 
+    void deleteByUsername(String username);
+
     @Query("from AppUser au where au.username = :username and au.password = :password")
     Optional<AppUser> findByUsernameAndPassword(String username, String password);
 }
