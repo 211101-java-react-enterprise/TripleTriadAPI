@@ -88,8 +88,8 @@ Using numeric version of stats
      */
 
     private static int count = 0;
-    @Id
 
+    @Id
     @Column(name = "id", columnDefinition = "serial")
     private int id;
     @Column(name = "name", columnDefinition = "varchar(255)")

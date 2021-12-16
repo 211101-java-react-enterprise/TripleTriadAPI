@@ -13,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @RestController
@@ -31,7 +32,8 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public void checkUsernameAvailability(@PathVariable String username) {
         if (userService.usernameExists(username)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            //If username found return 409 status
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
     }
 
@@ -47,12 +49,10 @@ public class UserController {
     }
 
 
-    @PostMapping(value = "/get", consumes = "application/json", produces = "application/json")
+    @PostMapping(value = "/get", consumes = "text/plain", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody UserResponse getUser(@RequestBody String username) {
-        System.out.println(username);
         AppUser user = userService.getUser(username);
-        if(user == null) throw new ResourceNotFoundException();
         return new UserResponse(user);
     }
 
@@ -60,7 +60,6 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody List<UserResponse> getAllUsers() {
         List<AppUser> user = userService.getAllUsers();
-        if(user == null) throw new ResourceNotFoundException();
         List<UserResponse> resp;
         resp = user.stream().map(UserResponse::new)
                 .collect(Collectors.toList());
@@ -70,7 +69,7 @@ public class UserController {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public void error(ResourceNotFoundException e){
+    public void error(NoSuchElementException e){
         e.printStackTrace();
     }
 }

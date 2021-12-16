@@ -1,6 +1,7 @@
 package com.revature.ttapi.card.services;
 
 import com.revature.ttapi.card.CardRepository;
+import com.revature.ttapi.card.dtos.requests.CardRequest;
 import com.revature.ttapi.card.dtos.requests.NewCardRequest;
 import com.revature.ttapi.card.dtos.responses.CardResponse;
 import com.revature.ttapi.card.models.Card;
@@ -58,10 +59,15 @@ public class CardService {
     }
 
     @Transactional(readOnly = true)
+    public CardResponse findCardById(int id) {
+        return new CardResponse(cardRepo.findById(id).get());
+    }
+
+    @Transactional(readOnly = true)
     public List<CardResponse> findCardsByStars(int stars) {
 
         if (stars < 1 || stars > 5) {
-            throw new InvalidRequestException("Invalid owner id provided!");
+            throw new InvalidRequestException("Invalid star number provided!");
         }
 
         List<CardResponse> cards = cardRepo.findCardsByStars(stars)

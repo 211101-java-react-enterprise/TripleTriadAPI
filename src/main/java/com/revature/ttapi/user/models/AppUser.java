@@ -17,8 +17,7 @@ public class AppUser implements Serializable {
 
     @Id
     @GeneratedValue
-    @Column(name = "id",
-            columnDefinition = "uuid DEFAULT uuid_generate_v4()")
+    @Column(name = "id")
     private UUID id;
     @OneToOne(
             mappedBy = "appUser",
@@ -66,6 +65,7 @@ public class AppUser implements Serializable {
 
     public AppUser() {
         super();
+        this.id = UUID.randomUUID();
         this.accountType = AccountType.BASIC;
         this.creationDate = new Date();
         this.lastUpdated = new Date();

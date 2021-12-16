@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -47,7 +48,7 @@ public class UserService {
     }
 
     @Transactional
-    public AppUser getUser(String username){
-        return userRepo.findByUsername(username).orElse(null);
+    public AppUser getUser(String username) throws NoSuchElementException {
+        return userRepo.findByUsername(username).get();
     }
 }
