@@ -72,9 +72,7 @@ public class CardService {
         if (cards.isEmpty()) {
             throw new ResourceNotFoundException();
         }
-
         return cards;
-
     }
 
     @Transactional
