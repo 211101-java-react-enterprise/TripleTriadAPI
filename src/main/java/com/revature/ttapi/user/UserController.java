@@ -42,4 +42,16 @@ public class UserController {
         }
     }
 
+//
+//    @PostMapping(value = "/get", consumes = "application/json")
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public @ResponseBody UserResponse registerAccount(@Valid @RequestBody UserRequest userRequest, HttpServletRequest servletRequest) {
+//        try {
+//            AppUser registeredUser = userService.registerNewUserAccount(userRequest);
+//            return new UserResponse(registeredUser);
+//        } catch (AccountExistsException e) {
+//            return null;
+//        }
+
+
 }

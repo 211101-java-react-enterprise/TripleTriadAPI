@@ -11,12 +11,13 @@ import java.util.Objects;
 @Component
 public class UserRequest implements PasswordForm {
 
+    @NotBlank
     private String username;
 
-
+    @NotBlank
     private String password;
 
-
+    @NotBlank
     private String matchingPassword;
 
     public UserRequest(){
