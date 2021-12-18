@@ -1,18 +1,17 @@
 package com.revature.ttapi.user.models;
 
-import com.revature.ttapi.collection.CardCollection;
 import com.revature.ttapi.user.dtos.requests.EditUserRequest;
 import com.revature.ttapi.user.dtos.requests.UserRequest;
 import org.hibernate.annotations.NaturalId;
+import org.springframework.context.annotation.Scope;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "app_user")
+@Scope("prototype")
 public class AppUser implements Serializable {
 
     @Id
@@ -31,19 +30,22 @@ public class AppUser implements Serializable {
     )
     @PrimaryKeyJoinColumn
     private UserProfile userProfile;
-    @OneToOne(
-            //https://stackoverflow.com/questions/14585836/hibernate-many-to-many-cascading-delete
-            mappedBy = "user",
-            fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE,
-                    CascadeType.DETACH,
-                    CascadeType.REFRESH
-            },
-            orphanRemoval = true)
-    @PrimaryKeyJoinColumn
-    private CardCollection cardCollection;
+//    @OneToOne(
+//            //https://stackoverflow.com/questions/14585836/hibernate-many-to-many-cascading-delete
+//            mappedBy = "user",
+//            fetch = FetchType.LAZY,
+//            cascade = {
+//                    CascadeType.PERSIST,
+//                    CascadeType.MERGE,
+//                    CascadeType.DETACH,
+//                    CascadeType.REFRESH
+//            },
+//            orphanRemoval = true)
+//  @PrimaryKeyJoinColumn
+//  private CardCollection cardCollection;
+    //TODO Change to string
+    @Column(columnDefinition = "BINARY(8192)")
+    private ArrayList<Short> cardCollection;
     @NaturalId
     @Column(name = "username",
             unique = true,
@@ -66,6 +68,7 @@ public class AppUser implements Serializable {
     public AppUser() {
         super();
         this.id = UUID.randomUUID();
+        this.cardCollection = new ArrayList<>();
         this.accountType = AccountType.BASIC;
         this.creationDate = new Date();
         this.lastUpdated = new Date();
@@ -134,11 +137,19 @@ public class AppUser implements Serializable {
         this.userProfile = userProfile;
     }
 
-    public CardCollection getCardCollection() {
+    public void addCard(int cardID){
+        if(this.cardCollection.contains((short) cardID)){
+            return;
+        }
+        this.cardCollection.add((short) cardID);
+        Collections.sort(this.cardCollection);
+    }
+
+    public ArrayList<Short> getCardCollection() {
         return cardCollection;
     }
 
-    public void setCardCollection(CardCollection cardCollection) {
+    public void setCardCollection(ArrayList<Short> cardCollection) {
         this.cardCollection = cardCollection;
     }
 
