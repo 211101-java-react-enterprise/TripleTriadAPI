@@ -1,6 +1,7 @@
 package com.revature.ttapi.user;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.revature.ttapi.card.models.Card;
 import com.revature.ttapi.common.exceptions.AccountExistsException;
 import com.revature.ttapi.common.exceptions.ResourceNotFoundException;
 import com.revature.ttapi.user.dtos.requests.UserRequest;
@@ -48,7 +49,6 @@ public class UserController {
         }
     }
 
-
     @PostMapping(value = "/get", consumes = "text/plain", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody UserResponse getUser(@RequestBody String username) {
@@ -65,6 +65,20 @@ public class UserController {
                 .collect(Collectors.toList());
         return resp;
 
+    }
+
+    @GetMapping(value = "/{user}/{cardID}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addCard(@PathVariable int cardID, @PathVariable String user){
+        userService.addCard(user, cardID);
+    }
+
+    @GetMapping(value = "/{user}/addall")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addAllCards(@PathVariable String user){
+        for (int i = 1; i <= Card.getCount(); i++) {
+            userService.addCard(user, i);
+        }
     }
 
     @PostMapping(value = "/delete", consumes = "text/plain")
