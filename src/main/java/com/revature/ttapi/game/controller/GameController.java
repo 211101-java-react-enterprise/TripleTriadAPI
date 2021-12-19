@@ -27,7 +27,7 @@ public class GameController {
     //Retrieve the Game object
     @GetMapping("/{gameID}")
     @ResponseStatus(HttpStatus.OK)
-    public GameResponse retrieveCurrrentGame(@RequestParam int gameID) {
+    public GameResponse retrieveCurrentGame(@RequestParam int gameID) {
         //Make a function in service that calls the DAO to find the game
         return new GameResponse(gameService.getGame(gameID));
     }
