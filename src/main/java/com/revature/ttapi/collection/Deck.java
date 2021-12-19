@@ -4,7 +4,6 @@ import com.revature.ttapi.card.models.Card;
 
 import javax.persistence.*;
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -21,7 +20,7 @@ public class Deck {
             referencedColumnName = "id",
             nullable = false
     )
-    private CardCollection cardCollection;
+
 
     @Transient
     private Set<Card> cards;
@@ -32,14 +31,6 @@ public class Deck {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public CardCollection getCardCollection() {
-        return cardCollection;
-    }
-
-    public void setCardCollection(CardCollection collection) {
-        this.cardCollection = collection;
     }
 
     public Set<Card> getCards() {
@@ -72,25 +63,4 @@ public class Deck {
         return cards.contains(card);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Deck deck = (Deck) o;
-        return id == deck.id && cardCollection.equals(deck.cardCollection) && cards.equals(deck.cards);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, cardCollection, cards);
-    }
-
-    @Override
-    public String toString() {
-        return "Deck{" +
-                "id=" + id +
-                ", collections=" + cardCollection +
-                ", cards=" + cards +
-                '}';
-    }
 }

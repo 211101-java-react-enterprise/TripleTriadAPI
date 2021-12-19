@@ -53,6 +53,12 @@ public class UserService {
     }
 
     @Transactional
+    public void addCard(String username, int cardID){
+        AppUser user = userRepo.findByUsername(username).get();
+        user.addCard(cardID);
+    }
+
+    @Transactional
     public AppUser getUser(String username) throws NoSuchElementException {
         return userRepo.findByUsername(username).get();
     }
