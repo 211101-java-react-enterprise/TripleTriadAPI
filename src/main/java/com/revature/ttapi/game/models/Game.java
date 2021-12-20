@@ -1,5 +1,7 @@
 package com.revature.ttapi.game.models;
 
+
+import com.revature.ttapi.game.services.BoardConverter;
 import com.revature.ttapi.collection.Deck;
 import com.revature.ttapi.game.services.BoardConverter;
 import com.revature.ttapi.user.models.AppUser;
@@ -8,7 +10,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
-import java.util.Objects;
+
+
 
 @Entity
 @Component
@@ -21,10 +24,11 @@ public class Game {
     private int id;
     private  String player1_username;
     private  String player2_username;
-    @Transient
-    private  Deck deck_p1;
-    @Transient
-    private  Deck deck_p2;
+    //TODO: More Deck Refactoring
+//    @Transient
+//    private  Deck deck_p1;
+//    @Transient
+//    private  Deck deck_p2;
     private  String result;
     @Column(columnDefinition = "varchar(1024)")
     @Convert(converter = BoardConverter.class)
@@ -69,21 +73,24 @@ public class Game {
         this.currentPlayer = currentPlayer;
     }
 
-    public Deck getDeck_p1() {
-        return deck_p1;
-    }
+    //TODO: DECKS
 
-    public void setDeck_p1(Deck deck_p1) {
-        this.deck_p1 = deck_p1;
-    }
+//    public Deck getDeck_p1() {
+//        return deck_p1;
+//    }
+//
+//    public void setDeck_p1(Deck deck_p1) {
+//        this.deck_p1 = deck_p1;
+//    }
+//
+//    public Deck getDeck_p2() {
+//        return deck_p2;
+//    }
+//
+//    public void setDeck_p2(Deck deck_p2) {
+//        this.deck_p2 = deck_p2;
+//    }
 
-    public Deck getDeck_p2() {
-        return deck_p2;
-    }
-
-    public void setDeck_p2(Deck deck_p2) {
-        this.deck_p2 = deck_p2;
-    }
 
     public String getResult() {
         return result;
@@ -105,18 +112,9 @@ public class Game {
         return currentPlayer;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Game game = (Game) o;
-        return id == game.id && player1_username.equals(game.player1_username) && player2_username.equals(game.player2_username) && Objects.equals(deck_p1, game.deck_p1) && Objects.equals(deck_p2, game.deck_p2) && Objects.equals(result, game.result) && board.equals(game.board) && Objects.equals(currentPlayer, game.currentPlayer);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, player1_username, player2_username, deck_p1, deck_p2, result, board, currentPlayer);
-    }
+//TODO: To Equals and Hashcode
+
 
     @Override
     public String toString() {
@@ -124,8 +122,9 @@ public class Game {
                 "id=" + id +
                 ", player1_username='" + player1_username + '\'' +
                 ", player2_username='" + player2_username + '\'' +
-                ", deck_p1=" + deck_p1 +
-                ", deck_p2=" + deck_p2 +
+                //TODO: Decks
+//                ", deck_p1=" + deck_p1 +
+//                ", deck_p2=" + deck_p2 +
                 ", result='" + result + '\'' +
                 ", board=" + board +
                 ", currentPlayer='" + currentPlayer + '\'' +

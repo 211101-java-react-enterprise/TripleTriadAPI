@@ -30,11 +30,16 @@ public class GameService {
         return game;
     }
 
-    public void cardHasBeenPlayed(PlayedCard card){
+
+    public Game cardHasBeenPlayed(PlayedCard card){
         Game game = repository.findById(card.getGameID()).get();
         game.getBoard().setBoardRelations(game.getBoard().getPositions());
         game.getBoard().setNode(card.getLocationPlayed(), card.getCard(), card.getPlayer());
         game.getBoard().getPositions().get(card.getLocationPlayed()).compareRelations();
+
+        //Thought is to take updated game when cardHasBeenPlayed is called and send it back to the service calling it. Updating database before returning.
+        repository.save(game);
+        return game;
         //TODO: Figure out how to send the serialized board back and forth with socket controller
     }
 
