@@ -1,6 +1,7 @@
 # IDE-specific files
 .idea/
 *.iml
+/data
 
 # Compiled/Packaged files and directories
 out/
@@ -12,3 +13,6 @@ target/
 *.properties
 *.log
 *.yml
+
+#Database Files
+*.db
