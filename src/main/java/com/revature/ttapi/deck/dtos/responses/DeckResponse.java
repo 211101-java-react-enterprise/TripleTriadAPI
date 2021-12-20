@@ -9,8 +9,6 @@ import java.util.UUID;
 
 public class DeckResponse {
 
-   //TODO Feels like we are repeating the entire deck model just as a response object
-
     private UUID id;
     private UUID deckOwner;
     private String deckName;

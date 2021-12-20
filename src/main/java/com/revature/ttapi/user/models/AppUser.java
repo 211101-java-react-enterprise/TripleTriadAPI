@@ -30,19 +30,7 @@ public class AppUser implements Serializable {
     )
     @PrimaryKeyJoinColumn
     private UserProfile userProfile;
-//    @OneToOne(
-//            //https://stackoverflow.com/questions/14585836/hibernate-many-to-many-cascading-delete
-//            mappedBy = "user",
-//            fetch = FetchType.LAZY,
-//            cascade = {
-//                    CascadeType.PERSIST,
-//                    CascadeType.MERGE,
-//                    CascadeType.DETACH,
-//                    CascadeType.REFRESH
-//            },
-//            orphanRemoval = true)
-//  @PrimaryKeyJoinColumn
-//  private CardCollection cardCollection;
+
     //TODO Change to string
     @Column(columnDefinition = "BINARY(8192)")
     private ArrayList<Short> cardCollection;

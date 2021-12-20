@@ -54,7 +54,7 @@ public class Node {
         this.slotController = slotController;
     }
 
-    //Called to determine result of a play //TODO Maybe find a way to store and compare without long .chains
+    //Called to determine result of a play
     public void compareRelations(){
         //Compare to north card
         if (this.north_Node != null && (this.getPlayedCard().getStats().getTop() > this.getNorth_Node().getPlayedCard().getStats().getBottom())){
