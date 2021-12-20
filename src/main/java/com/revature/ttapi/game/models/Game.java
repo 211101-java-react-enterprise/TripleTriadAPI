@@ -2,10 +2,6 @@ package com.revature.ttapi.game.models;
 
 
 import com.revature.ttapi.game.services.BoardConverter;
-import com.revature.ttapi.collection.Deck;
-import com.revature.ttapi.game.services.BoardConverter;
-import com.revature.ttapi.user.models.AppUser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
