@@ -14,13 +14,18 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/triad-game-active").withSockJS();
+        // connect to this endpoint with SockJS
+        registry.addEndpoint("/triad-game-active").setAllowedOrigins("*").withSockJS();
    }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.enableSimpleBroker("/game");
+
+        // the prefix to use for all stomp client sends
         registry.setApplicationDestinationPrefixes("/app");
+
+        // subscribe to this endpoint after connecting
+        registry.enableSimpleBroker("/game"); //Associated with requests to start multiplayer
     }
 
 

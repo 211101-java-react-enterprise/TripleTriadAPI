@@ -17,13 +17,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/games")
 public class GameController {
 
+    private SimpMessagingTemplate template;
 
     private GameService gameService;
     //TODO Maybe Use This: private SimpMessagingTemplate;
 
     @Autowired
-    public GameController(GameService gameService) {
+    public GameController(GameService gameService, SimpMessagingTemplate template) {
         this.gameService = gameService;
+        this.template = template;
     }
 
     //Retrieve the Game object
@@ -39,15 +41,14 @@ public class GameController {
 
     //Two features. We think this will Take the played move from the UI, fetch the DB game with the UI given ID,
     //Set the game up on the server, update all relevant data. Save to the DB. Sent game back to UI for updating.
-    @PostMapping("/playedCard")
-    @ResponseStatus(HttpStatus.OK)
-    @MessageMapping("/game")
-    @SendTo("/app/updateUI")
-    public GameResponse updateUI(@RequestBody PlayedCard card){
+//    @PostMapping("/playedCard")
+//    @ResponseStatus(HttpStatus.OK)
+    @MessageMapping("/play-card") // you can send stompCLient requests to this endpoint
+//    @SendTo("/app/updateUI")
+    public void updateUI(@RequestBody PlayedCard card) {
         gameService.cardHasBeenPlayed(card);
         GameResponse updateUIInCloud = new GameResponse(gameService.getGame(card.getGameID()));
-        return updateUIInCloud;
-
+        template.convertAndSend(updateUIInCloud);
     }
 
     //Original thought from demo was needed 2 functions.

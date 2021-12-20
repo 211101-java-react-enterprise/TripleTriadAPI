@@ -15,12 +15,12 @@
             }
 
             function connect() {
-                var socket = new SockJS('/game');
+                var socket = new SockJS('/triad-game-active');
                 stompClient = Stomp.over(socket);
                 stompClient.connect({}, function(frame) {
                     setConnected(true);
                     console.log('Connected: ' + frame);
-                    stompClient.subscribe('/game/updateUI', function(messageOutput) {
+                    stompClient.subscribe('/game', function(messageOutput) {
                         showMessageOutput(JSON.parse(messageOutput.body));
                     });
                 });
@@ -37,7 +37,7 @@
             function sendMessage() {
                 var from = document.getElementById('from').value;
                 var text = document.getElementById('text').value;
-                stompClient.send("/app/game", {},
+                stompClient.send("/app/play-card", {},
                   JSON.stringify({'from':from, 'text':text}));
             }
 
