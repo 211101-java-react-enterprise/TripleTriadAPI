@@ -2,10 +2,16 @@ package com.revature.ttapi.game.models;
 
 
 import com.revature.ttapi.game.services.BoardConverter;
+import com.revature.ttapi.collection.Deck;
+import com.revature.ttapi.game.services.BoardConverter;
+import com.revature.ttapi.user.models.AppUser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+
+
 
 @Entity
 @Component
@@ -66,6 +72,7 @@ public class Game {
     public void setCurrentPlayer(String currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
+
     //TODO: DECKS
 
 //    public Deck getDeck_p1() {
@@ -83,6 +90,7 @@ public class Game {
 //    public void setDeck_p2(Deck deck_p2) {
 //        this.deck_p2 = deck_p2;
 //    }
+
 
     public String getResult() {
         return result;
@@ -104,7 +112,9 @@ public class Game {
         return currentPlayer;
     }
 
+
 //TODO: To Equals and Hashcode
+
 
     @Override
     public String toString() {

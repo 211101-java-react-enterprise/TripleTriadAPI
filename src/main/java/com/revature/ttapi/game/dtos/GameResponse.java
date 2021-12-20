@@ -1,7 +1,6 @@
 package com.revature.ttapi.game.dtos;
 
 
-
 import com.revature.ttapi.game.models.Board;
 import com.revature.ttapi.game.models.Game;
 
@@ -58,6 +57,7 @@ public class GameResponse {
     public void setPlayer2_username(String player2_username) {
         this.player2_username = player2_username;
     }
+
 //TODO: Decks
 //    public Deck getDeck_p1() {
 //        return deck_p1;
@@ -74,6 +74,7 @@ public class GameResponse {
 //    public void setDeck_p2(Deck deck_p2) {
 //        this.deck_p2 = deck_p2;
 //    }
+
 
     public Board getBoard() {
         return board;

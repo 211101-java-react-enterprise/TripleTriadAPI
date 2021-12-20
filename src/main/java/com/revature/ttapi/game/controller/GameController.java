@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/games")
 public class GameController {
 
+
     private SimpMessagingTemplate template;
 
     private GameService gameService;
@@ -31,12 +32,14 @@ public class GameController {
     //Retrieve the Game object
     @GetMapping("/{gameID}")
     @ResponseStatus(HttpStatus.OK)
+
     public GameResponse retrieveCurrentGame(@RequestParam int gameID) {
         //Make a function in service that calls the DAO to find the game
         return new GameResponse(gameService.getGame(gameID));
     }
 
     //TODO: Create game from endpoint with socket
+
 
 
     //Two features. We think this will Take the played move from the UI, fetch the DB game with the UI given ID,
@@ -61,6 +64,7 @@ public class GameController {
 //        GameResponse updateUIInCloud = new GameResponse(game);
 //        return updateUIInCloud;
 //    }
+
 
 
 }

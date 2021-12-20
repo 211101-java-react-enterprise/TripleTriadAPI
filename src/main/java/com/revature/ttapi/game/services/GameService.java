@@ -30,11 +30,13 @@ public class GameService {
         return game;
     }
 
+
     public Game cardHasBeenPlayed(PlayedCard card){
         Game game = repository.findById(card.getGameID()).get();
         game.getBoard().setBoardRelations(game.getBoard().getPositions());
         game.getBoard().setNode(card.getLocationPlayed(), card.getCard(), card.getPlayer());
         game.getBoard().getPositions().get(card.getLocationPlayed()).compareRelations();
+
         //Thought is to take updated game when cardHasBeenPlayed is called and send it back to the service calling it. Updating database before returning.
         repository.save(game);
         return game;
