@@ -1,5 +1,6 @@
 package com.revature.ttapi.auth;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.revature.ttapi.auth.dtos.request.LoginRequest;
 import com.revature.ttapi.user.UserService;
 import com.revature.ttapi.user.models.AppUser;
@@ -35,5 +36,11 @@ public class AuthController {
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void logout(HttpSession session) { session.invalidate(); }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public void error(ResponseStatusException e){
+        e.printStackTrace();
+    }
 
 }

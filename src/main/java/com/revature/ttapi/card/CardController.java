@@ -45,6 +45,7 @@ public class CardController {
         return resp;
     }
 
+    //TODO: How do we test this in postman
     @PostMapping(value = "/fetch")
     @ResponseStatus(HttpStatus.OK)
     public CardResponse fetchCard(@RequestBody CardRequest request) throws JsonProcessingException {

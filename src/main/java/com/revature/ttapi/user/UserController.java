@@ -107,4 +107,10 @@ public class UserController {
     public void error(AuthenticationException e){
         e.printStackTrace();
     }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public void error(ResponseStatusException e){
+        e.printStackTrace();
+    }
 }
