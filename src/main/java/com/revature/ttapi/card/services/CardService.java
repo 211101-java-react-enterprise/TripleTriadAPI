@@ -43,6 +43,11 @@ public class CardService {
     }
 
     @Transactional(readOnly = true)
+    public List<Card> getAllCards(){
+        return (List<Card>) cardRepo.findAll();
+    }
+
+    @Transactional(readOnly = true)
     public List<CardResponse> findAllCardsByCollectionId(int collectionId) {
 
         List<CardResponse> cards = ((Collection<Card>) cardRepo.findAll())
