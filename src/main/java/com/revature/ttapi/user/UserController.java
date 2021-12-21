@@ -50,9 +50,9 @@ public class UserController {
         }
     }
 
-    @PostMapping(value = "/get", consumes = "text/plain", produces = "application/json")
+    @GetMapping(value = "/get/{username}", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody UserResponse getUser(@RequestBody String username) {
+    public @ResponseBody UserResponse getUser(@PathVariable String username) {
         AppUser user = userService.getUser(username);
         return new UserResponse(user);
     }
@@ -82,9 +82,9 @@ public class UserController {
         }
     }
 
-    @PostMapping(value = "/delete", consumes = "text/plain")
+    @GetMapping(value = "/delete/{username}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteUser(@RequestBody String username) {
+    public void deleteUser(@PathVariable String username) {
         userService.deleteUser(username);
     }
 
