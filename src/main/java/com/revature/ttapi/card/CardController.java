@@ -6,11 +6,15 @@ import com.revature.ttapi.card.dtos.responses.CardResponse;
 import com.revature.ttapi.card.models.Card;
 import com.revature.ttapi.card.services.CardService;
 import com.revature.ttapi.card.services.FetchCards;
+import com.revature.ttapi.user.dtos.responses.UserResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/cards")
 public class CardController {
@@ -21,13 +25,24 @@ public class CardController {
         this.cardService = cardService;
     }
 
-    @GetMapping("/fetchall")
+    @GetMapping("/populatedb")
     @ResponseStatus(HttpStatus.CREATED)
     @Scheduled(cron = "0 03 * * TUE", zone = "US/Central")
-    public void fetchAllCards() throws JsonProcessingException {
+    public void populateAllCards() throws JsonProcessingException {
         FetchCards f = new FetchCards();
         Card[] a = f.generateArray();
         cardService.importCards(a);
+    }
+
+    @GetMapping("/fetchall")
+    @ResponseStatus(HttpStatus.CREATED)
+    @Scheduled(cron = "0 03 * * TUE", zone = "US/Central")
+    public List<CardResponse> fetchAllCards() throws JsonProcessingException {
+        List<Card> card = cardService.getAllCards();
+        List<CardResponse> resp;
+        resp = card.stream().map(CardResponse::new)
+                .collect(Collectors.toList());
+        return resp;
     }
 
     @PostMapping(value = "/fetch")

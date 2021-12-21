@@ -3,7 +3,9 @@ package com.revature.ttapi.user;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.revature.ttapi.card.models.Card;
 import com.revature.ttapi.common.exceptions.AccountExistsException;
+import com.revature.ttapi.common.exceptions.AuthenticationException;
 import com.revature.ttapi.common.exceptions.ResourceNotFoundException;
+import com.revature.ttapi.user.dtos.requests.LoginRequest;
 import com.revature.ttapi.user.dtos.requests.UserRequest;
 import com.revature.ttapi.user.dtos.responses.UserResponse;
 import com.revature.ttapi.user.models.AppUser;
@@ -17,6 +19,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -49,9 +52,9 @@ public class UserController {
         }
     }
 
-    @PostMapping(value = "/get", consumes = "text/plain", produces = "application/json")
+    @GetMapping(value = "/get/{username}", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody UserResponse getUser(@RequestBody String username) {
+    public @ResponseBody UserResponse getUser(@PathVariable String username) {
         AppUser user = userService.getUser(username);
         return new UserResponse(user);
     }
@@ -81,15 +84,27 @@ public class UserController {
         }
     }
 
-    @PostMapping(value = "/delete", consumes = "text/plain")
+    @GetMapping(value = "/delete/{username}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteUser(@RequestBody String username) {
+    public void deleteUser(@PathVariable String username) {
         userService.deleteUser(username);
+    }
+
+    @PostMapping(value = "/login")
+    @ResponseStatus(HttpStatus.OK)
+    public UserResponse login(@RequestBody LoginRequest req) {
+        return new UserResponse(userService.login(req.getUsername(), req.getPassword()));
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public void error(NoSuchElementException e){
+        e.printStackTrace();
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public void error(AuthenticationException e){
         e.printStackTrace();
     }
 }
