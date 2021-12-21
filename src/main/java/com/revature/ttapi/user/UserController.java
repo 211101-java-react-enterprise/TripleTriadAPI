@@ -3,7 +3,9 @@ package com.revature.ttapi.user;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.revature.ttapi.card.models.Card;
 import com.revature.ttapi.common.exceptions.AccountExistsException;
+import com.revature.ttapi.common.exceptions.AuthenticationException;
 import com.revature.ttapi.common.exceptions.ResourceNotFoundException;
+import com.revature.ttapi.user.dtos.requests.LoginRequest;
 import com.revature.ttapi.user.dtos.requests.UserRequest;
 import com.revature.ttapi.user.dtos.responses.UserResponse;
 import com.revature.ttapi.user.models.AppUser;
@@ -88,9 +90,21 @@ public class UserController {
         userService.deleteUser(username);
     }
 
+    @PostMapping(value = "/login")
+    @ResponseStatus(HttpStatus.OK)
+    public UserResponse login(@RequestBody LoginRequest req) {
+        return new UserResponse(userService.login(req.getUsername(), req.getPassword()));
+    }
+
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public void error(NoSuchElementException e){
+        e.printStackTrace();
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public void error(AuthenticationException e){
         e.printStackTrace();
     }
 }

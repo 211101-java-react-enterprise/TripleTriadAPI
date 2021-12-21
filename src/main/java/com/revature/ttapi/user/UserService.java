@@ -1,6 +1,7 @@
 package com.revature.ttapi.user;
 
 import com.revature.ttapi.common.exceptions.AccountExistsException;
+import com.revature.ttapi.common.exceptions.AuthenticationException;
 import com.revature.ttapi.user.dtos.requests.UserRequest;
 import com.revature.ttapi.user.models.AppUser;
 import org.springframework.stereotype.Service;
@@ -61,5 +62,17 @@ public class UserService {
     @Transactional
     public AppUser getUser(String username) throws NoSuchElementException {
         return userRepo.findByUsername(username).get();
+    }
+
+    @Transactional(readOnly = true)
+    public AppUser login(String username, String password) throws NoSuchElementException {
+        AppUser user = userRepo.findByUsername(username).get();
+        System.out.println(user.getPassword());
+        System.out.println(password);
+        if (user.getPassword().equals(password)){
+            return user;
+        }else{
+            throw new AuthenticationException("Invalid password");
+        }
     }
 }
