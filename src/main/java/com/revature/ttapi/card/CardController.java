@@ -36,9 +36,12 @@ public class CardController {
 
     @GetMapping("/fetchall")
     @ResponseStatus(HttpStatus.CREATED)
-    @Scheduled(cron = "0 03 * * TUE", zone = "US/Central")
     public List<CardResponse> fetchAllCards() throws JsonProcessingException {
         List<Card> card = cardService.getAllCards();
+        if(card.isEmpty()){
+            populateAllCards();
+            card = cardService.getAllCards();
+        }
         List<CardResponse> resp;
         resp = card.stream().map(CardResponse::new)
                 .collect(Collectors.toList());
