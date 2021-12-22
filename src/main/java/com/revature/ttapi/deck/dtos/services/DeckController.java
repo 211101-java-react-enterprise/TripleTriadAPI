@@ -27,7 +27,7 @@ public class DeckController {
 
     //Fetch Deck
     @GetMapping("/fetch/{userID}/{deckName}")
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(HttpStatus.OK)
     public DeckResponse fetchDeckByDeckName(@PathVariable String deckName, @PathVariable UUID userID) {
         //go to repo and findByDeckName
         Deck fetchedDeck = deckService.findDeckByNameAndOwner(deckName, userID);
@@ -67,7 +67,7 @@ public class DeckController {
     //TODO Make a fetch all
     //Fetch all decks by username
     @GetMapping("/fetch/{userID}")
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(HttpStatus.OK)
     public ArrayList<DeckResponse> fetchAllDecksByUuid(@PathVariable UUID userID) {
         //Trust that this cannot be invoked without a valid UUID cause deckbuilding is limited to login
         ArrayList<DeckResponse> resp = (ArrayList<DeckResponse>) deckService.findAllDecksByUuid(userID).stream().map(DeckResponse::new).collect(Collectors.toList());
