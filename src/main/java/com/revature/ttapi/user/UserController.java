@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.revature.ttapi.card.models.Card;
 import com.revature.ttapi.common.exceptions.AccountExistsException;
 import com.revature.ttapi.common.exceptions.AuthenticationException;
+import com.revature.ttapi.common.exceptions.CardIDBeyondCollectionTotalException;
 import com.revature.ttapi.common.exceptions.ResourceNotFoundException;
 import com.revature.ttapi.user.dtos.requests.LoginRequest;
 import com.revature.ttapi.user.dtos.requests.UserRequest;
@@ -48,7 +49,7 @@ public class UserController {
             AppUser registeredUser = userService.registerNewUserAccount(userRequest);
             return new UserResponse(registeredUser);
         } catch (AccountExistsException e) {
-            return null;
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
     }
 
@@ -73,7 +74,11 @@ public class UserController {
     @GetMapping(value = "/{user}/{cardID}")
     @ResponseStatus(HttpStatus.CREATED)
     public void addCard(@PathVariable int cardID, @PathVariable String user){
+        if(cardID > Card.getCount()+1 || cardID <= 0){
+            throw new CardIDBeyondCollectionTotalException("Card Id was beyond last ID in datasource!");
+        }
         userService.addCard(user, cardID);
+
     }
 
     @GetMapping(value = "/{user}/addall")
@@ -87,7 +92,12 @@ public class UserController {
     @GetMapping(value = "/delete/{username}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteUser(@PathVariable String username) {
-        userService.deleteUser(username);
+        if(userService.usernameExists(username)) {
+            userService.deleteUser(username);
+        } else {
+            throw new ResourceNotFoundException("No such user in the datasource!");
+        }
+
     }
 
     @PostMapping(value = "/login")
@@ -111,6 +121,18 @@ public class UserController {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
     public void error(ResponseStatusException e){
+        e.printStackTrace();
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public void error(CardIDBeyondCollectionTotalException e){
+        e.printStackTrace();
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public void error(ResourceNotFoundException e){
         e.printStackTrace();
     }
 }
