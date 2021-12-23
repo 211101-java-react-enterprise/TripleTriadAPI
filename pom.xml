@@ -22,6 +22,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-inline</artifactId>
+            <version>4.1.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
@@ -54,11 +60,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -106,9 +107,25 @@
                         </goals>
                         <configuration>
                             <excludes>
-                                <!--                                <exclude>com/revature/quizzard/daos/*</exclude>-->
-                                <!--                                <exclude>com/revature/quizzard/models/*</exclude>-->
-                                <!--                                <exclude>com/revature/quizzard/exceptions/*</exclude>-->
+                                <exclude>**/TtapiApplication*</exclude>
+                                <exclude>**/auth/*</exclude>
+                                <exclude>**/auth/**/*</exclude>
+                                <exclude>**/card/dtos/*</exclude>
+                                <exclude>**/card/dtos/**/*</exclude>
+                                <exclude>**/card/models/*</exclude>
+                                <exclude>**/card/CardRepository*</exclude>
+                                <exclude>**/common/**/*</exclude>
+                                <exclude>**/deck/dtos/*</exclude>
+                                <exclude>**/deck/models/*</exclude>
+                                <exclude>**/game/*</exclude>
+                                <exclude>**/game/**/*</exclude>
+                                <exclude>**/user/dtos/**/*</exclude>
+                                <exclude>**/user/models/*</exclude>
+                                <exclude>**/user/validators/*</exclude>
+                                <exclude>**/user/validators/**/*</exclude>
+                                <exclude>**/user/UserRepository*</exclude>
+                                <exclude>**/websocket/*</exclude>
+                                <exclude>**/websocket/**/*</exclude>
                             </excludes>
                         </configuration>
                     </execution>

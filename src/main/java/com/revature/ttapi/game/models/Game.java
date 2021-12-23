@@ -1,7 +1,7 @@
 package com.revature.ttapi.game.models;
 
 
-import com.revature.ttapi.deck.dtos.models.Deck;
+import com.revature.ttapi.deck.models.Deck;
 import com.revature.ttapi.game.services.BoardConverter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;

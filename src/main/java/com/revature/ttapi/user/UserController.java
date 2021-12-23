@@ -43,7 +43,7 @@ public class UserController {
 
     @PostMapping(value = "/registration", consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody UserResponse registerAccount(@Valid @RequestBody UserRequest userRequest, HttpServletRequest servletRequest) {
+    public @ResponseBody UserResponse registerAccount(@Valid @RequestBody UserRequest userRequest) {
         try {
             AppUser registeredUser = userService.registerNewUserAccount(userRequest);
             return new UserResponse(registeredUser);

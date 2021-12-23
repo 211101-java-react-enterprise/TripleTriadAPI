@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 
 @Entity
@@ -174,5 +175,18 @@ Using numeric version of stats
     @Override
     public String toString() {
         return "Card{" + "id=" + id + ", name='" + name + '\'' + ", description='" + description + '\'' + ", stars=" + stars + ", stats=" + stats + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Card card = (Card) o;
+        return id == card.id && stars == card.stars && name.equals(card.name) && description.equals(card.description) && stats.toString().equals(card.stats.toString());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, stars, stats.toString());
     }
 }

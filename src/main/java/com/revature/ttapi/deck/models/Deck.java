@@ -1,4 +1,4 @@
-package com.revature.ttapi.deck.dtos.models;
+package com.revature.ttapi.deck.models;
 
 import com.revature.ttapi.card.models.Card;
 import com.revature.ttapi.common.exceptions.CardAlreadyInDeckException;

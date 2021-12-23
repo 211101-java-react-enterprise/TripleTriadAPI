@@ -1,7 +1,7 @@
 package com.revature.ttapi.game.dtos;
 
 
-import com.revature.ttapi.deck.dtos.models.Deck;
+import com.revature.ttapi.deck.models.Deck;
 import com.revature.ttapi.game.models.Board;
 import com.revature.ttapi.game.models.Game;
 
