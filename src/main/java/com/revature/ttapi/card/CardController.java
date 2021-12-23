@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,16 +50,16 @@ public class CardController {
         return resp;
     }
 
-    //TODO: How do we test this in postman
     @PostMapping(value = "/fetch")
     @ResponseStatus(HttpStatus.OK)
-    public CardResponse fetchCard(@RequestBody CardRequest request) throws JsonProcessingException {
+    public CardResponse fetchCard(@RequestBody CardRequest request){
         return cardService.findCardById(request.getId());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public void error(JsonProcessingException e){
+    public void error(Exception e, HttpServletResponse resp) throws IOException {
         e.printStackTrace();
+        resp.sendError(500, e.toString());
     }
 }

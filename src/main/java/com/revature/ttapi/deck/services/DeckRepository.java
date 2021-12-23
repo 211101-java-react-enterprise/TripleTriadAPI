@@ -1,7 +1,7 @@
-package com.revature.ttapi.deck.dtos.services;
+package com.revature.ttapi.deck.services;
 
 
-import com.revature.ttapi.deck.dtos.models.Deck;
+import com.revature.ttapi.deck.models.Deck;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

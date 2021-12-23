@@ -1,6 +1,6 @@
 package com.revature.ttapi.deck.dtos;
 
-import com.revature.ttapi.deck.dtos.models.Deck;
+import com.revature.ttapi.deck.models.Deck;
 
 import java.util.ArrayList;
 import java.util.UUID;

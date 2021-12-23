@@ -1,11 +1,9 @@
-package com.revature.ttapi.deck.dtos.services;
+package com.revature.ttapi.deck.services;
 
 import com.revature.ttapi.common.exceptions.ResourceNotFoundException;
 import com.revature.ttapi.deck.dtos.DeckRequest;
-import com.revature.ttapi.deck.dtos.models.Deck;
-import com.revature.ttapi.deck.dtos.responses.DeckResponse;
-import com.revature.ttapi.user.UserService;
-import com.revature.ttapi.user.models.AppUser;
+import com.revature.ttapi.deck.models.Deck;
+import com.revature.ttapi.deck.dtos.DeckResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +26,7 @@ public class DeckController {
     //Fetch Deck
     @GetMapping("/fetch/{userID}/{deckName}")
     @ResponseStatus(HttpStatus.OK)
-    public DeckResponse fetchDeckByDeckName(@PathVariable String deckName, @PathVariable UUID userID) {
+    public DeckResponse fetchDeckByDeckName(@PathVariable UUID userID, @PathVariable String deckName) {
         //go to repo and findByDeckName
         Deck fetchedDeck = deckService.findDeckByNameAndOwner(deckName, userID);
         return new DeckResponse(fetchedDeck);
@@ -57,7 +55,7 @@ public class DeckController {
 
 
     //Delete Deck
-    @PostMapping("/delete/{deckID}")
+    @GetMapping("/delete/{deckID}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteDeck(@PathVariable UUID deckID) {
         //Delete deck by ID

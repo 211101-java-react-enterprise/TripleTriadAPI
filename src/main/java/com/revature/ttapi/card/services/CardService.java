@@ -48,22 +48,6 @@ public class CardService {
     }
 
     @Transactional(readOnly = true)
-    public List<CardResponse> findAllCardsByCollectionId(int collectionId) {
-
-        List<CardResponse> cards = ((Collection<Card>) cardRepo.findAll())
-                .stream()
-                .map(CardResponse::new)
-                .collect(Collectors.toList());
-
-        if (cards.isEmpty()) {
-            throw new ResourceNotFoundException();
-        }
-
-        return cards;
-
-    }
-
-    @Transactional(readOnly = true)
     public CardResponse findCardById(int id) {
         return new CardResponse(cardRepo.findById(id).get());
     }
@@ -72,7 +56,7 @@ public class CardService {
     public List<CardResponse> findCardsByStars(int stars) {
 
         if (stars < 1 || stars > 5) {
-            throw new InvalidRequestException("Invalid star number provided!");
+            throw new InvalidRequestException("Invalid star number provided! : " + stars);
         }
 
         List<CardResponse> cards = cardRepo.findCardsByStars(stars)
@@ -86,28 +70,16 @@ public class CardService {
         return cards;
     }
 
-    @Transactional
-    public ResourceCreationResponse createNewCard(@Valid NewCardRequest newCardRequest) {
-
-        Card newCard = new Card();
-        newCard.setName(newCardRequest.getName());
-        newCard.setDescription(newCardRequest.getDescription());
-        newCard.setStars(newCardRequest.getStars());
-        cardRepo.save(newCard);
-
-        return new ResourceCreationResponse(newCard.getId());
-
-    }
-
     public boolean isCardValid(Card card) {
         if (card == null) return false;
+        if (card.getId() <= 0 || card.getId() >= Card.getCount()) return false;
         if (card.getName() == null || card.getName()
                                           .trim()
                                           .equals("")) return false;
         if (card.getDescription() == null || card.getDescription()
                                                  .trim()
                                                  .equals("")) return false;
-        return (card.getStars() < 1 || (card.getStars() > 5));
+        return (card.getStars() >= 1 && (card.getStars() <= 5));
     }
 
     @Transactional
