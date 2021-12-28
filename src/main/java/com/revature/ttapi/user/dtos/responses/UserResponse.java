@@ -1,29 +1,52 @@
 package com.revature.ttapi.user.dtos.responses;
 
-import com.revature.ttapi.user.AppUser;
+import com.revature.ttapi.user.models.AppUser;
+import com.revature.ttapi.user.models.UserProfile;
 
-public class UserResponse {
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Objects;
+import java.util.UUID;
 
-    private String userId;
-    private String firstName;
-    private String lastName;
+public class UserResponse implements Serializable {
+
+    private UUID id;
+
     private String username;
+
+    private AppUser.AccountType accountType;
+
+    private ArrayList<Short> cardCollection;
 
     public UserResponse() {
         super();
     }
 
-    public UserResponse(AppUser creator) {
-        this.userId = creator.getId();
-        this.username = creator.getUsername();
+
+    public UserResponse(AppUser record) {
+        this.id = record.getId();
+        this.username = record.getUsername();
+        this.accountType = record.getAccountType();
+        this.cardCollection = record.getCardCollection();
     }
 
-    public String getUserId() {
-        return userId;
+    @Override
+    public String toString() {
+        return "UserResponse{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", accountType=" + accountType +
+                ", cardCollection=" + cardCollection +
+                '}';
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -34,12 +57,19 @@ public class UserResponse {
         this.username = username;
     }
 
-    @Override
-    public String toString() {
-        return "UserReponse{" +
-                "userId='" + userId + '\'' +
-                ", username='" + username + '\'' +
-                '}';
+    public AppUser.AccountType getAccountType() {
+        return accountType;
     }
 
+    public void setAccountType(AppUser.AccountType accountType) {
+        this.accountType = accountType;
+    }
+
+    public ArrayList<Short> getCardCollection() {
+        return cardCollection;
+    }
+
+    public void setCardCollection(ArrayList<Short> cardCollection) {
+        this.cardCollection = cardCollection;
+    }
 }

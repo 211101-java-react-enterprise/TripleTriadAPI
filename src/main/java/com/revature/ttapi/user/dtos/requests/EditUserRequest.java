@@ -1,24 +1,39 @@
 package com.revature.ttapi.user.dtos.requests;
 
-import com.revature.ttapi.common.dtos.EditResourceRequest;
-import com.revature.ttapi.user.AppUser;
+import com.revature.ttapi.user.models.AppUser;
 
-public class EditUserRequest extends EditResourceRequest {
+import java.util.Objects;
+import java.util.UUID;
 
-    private String email;
+public class EditUserRequest {
+
+    private UUID id;
+
+    private String username;
+
     private String password;
-    private int mgp;
+
+    private AppUser.AccountType accountType;
 
     public EditUserRequest() {
         super();
+        this.accountType = AppUser.AccountType.BASIC;
     }
 
-    public String getEmail() {
-        return email;
+    public UUID getId() {
+        return id;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -29,22 +44,34 @@ public class EditUserRequest extends EditResourceRequest {
         this.password = password;
     }
 
-    public AppUser extractUser() {
-        AppUser user = new AppUser();
-        user.setId(id);
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setMgp(mgp);
-        return user;
+    public AppUser.AccountType getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(AppUser.AccountType accountType) {
+        this.accountType = accountType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EditUserRequest that = (EditUserRequest) o;
+        return id.equals(that.id) && username.equals(that.username) && password.equals(that.password) && accountType == that.accountType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, password, accountType);
     }
 
     @Override
     public String toString() {
         return "EditUserRequest{" +
                 "id='" + id + '\'' +
-                ", email='" + email + '\'' +
+                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", accountType=" + accountType +
                 '}';
     }
-
 }

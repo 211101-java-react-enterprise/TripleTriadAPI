@@ -1,23 +1,24 @@
 package com.revature.ttapi.user.dtos.responses;
 
+import com.revature.ttapi.user.validators.Uuid;
+
+import java.util.UUID;
+
 public class RegistrationSuccessResponse {
 
-    private String id;
+    @Uuid
+    private UUID id;
 
     public RegistrationSuccessResponse() {
         super();
     }
 
-    public RegistrationSuccessResponse(String id) {
+    public RegistrationSuccessResponse(UUID id) {
         this.id = id;
     }
 
-    public String getId() {
+    public UUID getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     @Override
